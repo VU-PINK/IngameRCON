@@ -23,8 +23,8 @@ const App: React.FC = () => {
     * Debug
     */
     let debugMode: boolean = false;
-    if (!navigator.userAgent.includes('VeniceUnleashed')) {
-        if (window.location.ancestorOrigins === undefined || window.location.ancestorOrigins[0] !== 'webui://main') {
+    if (!navigator.userAgent.includes("VeniceUnleashed")) {
+        if (window.location.ancestorOrigins === undefined || window.location.ancestorOrigins[0] !== "webui://main") {
             debugMode = true;
         }
     }
@@ -37,6 +37,18 @@ const App: React.FC = () => {
             default:
                 return <GeneralTab />;
         }
+    }
+
+    const handleSave = () => {
+        let temp: any = [];
+        for (const [key, value] of Object.entries(formValue)) {
+            temp.push([
+                key,
+                value
+            ]);
+        }
+        sendToLua("WebUI:UpdateValues", JSON.stringify(temp));
+        setOpen(false);
     }
 
     window.OnSyncValues = (values: string) => {
@@ -84,10 +96,7 @@ const App: React.FC = () => {
                     <Drawer.Title>InGame RCON</Drawer.Title>
                     <Drawer.Actions>
                         <Button 
-                            onClick={() => {
-                                sendToLua("WebUI:UpdateValues", JSON.stringify(formValue));
-                                setOpen(false);
-                            }}
+                            onClick={handleSave}
                             appearance="primary"
                             size="sm"
                         >
