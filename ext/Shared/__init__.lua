@@ -1,5 +1,5 @@
 ---@type Logger
-require 'Logger'
+Logger = require 'Logger'
 
 -- Config
 LOGGER_ENABLED = true
