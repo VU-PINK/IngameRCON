@@ -1,6 +1,8 @@
 ---@class Client
 local Client = class('Client')
 
+local m_Logger = Logger('Client', true)
+
 function Client:__init()
     self:RegisterVars()
     self:RegisterEvents()
