@@ -236,8 +236,21 @@ function Client:RegisterEvents()
 	-- Net
 	NetEvents:Subscribe('IngameRCON:PullAnswer', self, self.OnPullAnswer)
 	-- Events
+	Events:Subscribe('Extension:Loaded', self, self.OnExtensionLoaded)
+    Events:Subscribe('Client:UpdateInput', self, self.OnClientUpdateInput)
     Events:Subscribe('WebUI:UpdateValues', self, self.OnWebUIUpdateValues)
 	Events:Subscribe('WebUI:PullRequest', self, self.OnPullRequest)
+end
+
+function Client:OnExtensionLoaded()
+	WebUI:Init()
+end
+
+function Client:OnClientUpdateInput()
+    -- TODO: Check if admin
+	if InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
+        WebUI:ExecuteJS("OnToggleMenu();")
+	end
 end
 
 function Client:OnWebUIUpdateValues(p_JSONData)
@@ -245,10 +258,12 @@ function Client:OnWebUIUpdateValues(p_JSONData)
 end
 
 function Client:OnPullRequest()
+    print("OnPullRequest")
 	NetEvents:Send('IngameRCON:PullRequest')
 end
 
 function Client:OnPullAnswer(p_CurrentSettingsJSON)
+    print("OnPullAnswer " .. p_CurrentSettingsJSON)
 	local s_ReceivedSettings = json.decode(p_CurrentSettingsJSON)
 
 	for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, CustomProvider, Drawer, Nav } from "rsuite";
 
@@ -65,6 +65,17 @@ const App: React.FC = () => {
     window.OnSetMenu = (open: boolean) => {
         setOpen(open);
     }
+
+    window.OnToggleMenu = () => {
+        setOpen(prevState => !prevState);
+    }
+
+    useEffect(() => {
+        if (open) {
+            sendToLua("WebUI:PullRequest");
+        }
+    }, [open])
+    
 
     return (
         <CustomProvider theme="dark">
@@ -140,5 +151,6 @@ declare global {
     interface Window {
         OnSyncValues: (values: string) => void;
         OnSetMenu: (open: boolean) => void;
+        OnToggleMenu: () => void;
     }
 }
