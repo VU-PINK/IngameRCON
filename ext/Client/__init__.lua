@@ -236,13 +236,8 @@ function Client:RegisterEvents()
 	-- Net
 	NetEvents:Subscribe('IngameRCON:PullAnswer', self, self.OnPullAnswer)
 	-- Events
-	Events:Subscribe('Extension:Loaded', self, self.OnExtensionLoaded)
     Events:Subscribe('WebUI:UpdateValues', self, self.OnWebUIUpdateValues)
 	Events:Subscribe('WebUI:PullRequest', self, self.OnPullRequest)
-end
-
-function Client:OnExtensionLoaded()
-	WebUI:Init()
 end
 
 function Client:OnWebUIUpdateValues(p_JSONData)
@@ -257,7 +252,9 @@ function Client:OnPullAnswer(p_CurrentSettingsJSON)
 	local s_ReceivedSettings = json.decode(p_CurrentSettingsJSON)
 
 	for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
-        l_Command['currentData'] = s_ReceivedSettings[l_CommandGroup][l_Command]["currentData"]
+        if s_ReceivedSettings[l_CommandGroup][l_Command]['canGet'] == true then
+            l_Command['currentData'] = s_ReceivedSettings[l_CommandGroup][l_Command]["currentData"]
+        end
 	end
 
 	WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(self.m_ValidCommands)))
