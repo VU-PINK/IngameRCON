@@ -4,10 +4,10 @@ import { Button, CustomProvider, Drawer, Nav } from "rsuite";
 
 import GeneralTab from "./tabs/GeneralTab";
 import VuTab from "./tabs/VuTab";
+import { sendToLua } from "./helpers";
 
 import "./App.css";
 import "./App.scss";
-import { sendToLua } from "./helpers";
 
 const initFormValue = {
     "vu.ColorCorrectionEnabled": true,
@@ -58,6 +58,7 @@ const App: React.FC = () => {
         } catch (error) {
             return;
         }
+        console.log(_values);
         setFormValue(_values);
     }
 
@@ -71,7 +72,7 @@ const App: React.FC = () => {
                 <style dangerouslySetInnerHTML={{
                     __html: `
                     body {
-                        background: #333;
+                        // background: #333;
                     }
 
                     #debugChat,

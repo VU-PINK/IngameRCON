@@ -307,8 +307,13 @@ function Client:RegisterEvents()
 	-- Net
 	NetEvents:Subscribe('IngameRCON:PullAnswer', self, self.OnPullAnswer)
 	-- Events
+	Events:Subscribe('Extension:Loaded', self, self.OnExtensionLoaded)
     Events:Subscribe('WebUI:UpdateValues', self, self.OnWebUIUpdateValues)
 	Events:Subscribe('WebUI:PullRequest', self, self.OnPullRequest)
+end
+
+function Client:OnExtensionLoaded()
+	WebUI:Init()
 end
 
 function Client:OnWebUIUpdateValues(p_JSONData)
