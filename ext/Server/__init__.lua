@@ -10,224 +10,224 @@ end
 
 function Server:RegisterVars()
     self.m_ValidCommands = {
-        admin = {
-            password = {
+        ['admin'] = {
+            ['password'] = {
 				currentData = nil
             },
-            say = {
+            ['say'] = {
 				currentData = nil
             },
-            yell = {
+            ['yell'] = {
 				currentData = nil
 			},
-            kick = {
+            ['kick'] = {
 				currentData = nil
 			},
-            move = {
+            ['move'] = {
 				currentData = nil
 			},
-            kill = {
+            ['kill'] = {
 				currentData = nil
 			},
-            ban = {
+            ['ban'] = {
 				currentData = nil
 			},
-            banRemove = {
+            ['banRemove'] = {
 				currentData = nil
 			},
-            banClear = {
+            ['banClear'] = {
 				currentData = nil
 			},
-            banList = {
+            ['banList'] = {
 				currentData = nil
 			}
         },
-        maps = {
-            add = {
+        ['mapList'] = {
+            ['add'] = {
 				currentData = nil
 			},
-            remove = {
+            ['remove'] = {
 				currentData = nil
 			},
-            clear = {
+            ['clear'] = {
 				currentData = nil
 			},
-            list = {
+            ['list'] = {
 				currentData = nil
 			},
-            nextMap = {
+            ['nextMap'] = {
 				currentData = nil
 			},
-            getMaps = {
+            ['getMaps'] = {
 				currentData = nil
 			},
-            getRounds = {
+            ['getRounds'] = {
 				currentData = nil
 			},
-            endRound = {
+            ['endRound'] = {
 				currentData = nil
 			},
-            runNext = {
+            ['runNext'] = {
 				currentData = nil
 			},
-            restartRound = {
+            ['restartRound'] = {
 				currentData = nil
 			},
 		},
-        vars = {
-            serverName = {
+        ['vars'] = {
+            ['serverName'] = {
 				currentData = nil
 			},
-            password = {
+            ['password'] = {
 				currentData = nil
 			},
-            roundStartPlayerCount = {
+            ['roundStartPlayerCount'] = {
 				currentData = nil
 			},
-            roundRestartPlayerCount = {
+            ['roundRestartPlayerCount'] = {
 				currentData = nil
 			},
-            preRound = {
+            ['preRound'] = {
 				currentData = nil
 			},
-            serverMessage = {
+            ['serverMessage'] = {
 				currentData = nil
 			},
-            friendlyfire = {
+            ['friendlyfire'] = {
 				currentData = nil
 			},
-            maxPlayers = {
+            ['maxPlayers'] = {
 				currentData = nil
 			},
-            serverDesc = {
+            ['serverDesc'] = {
 				currentData = nil
 			},
-            killCam = {
+            ['killCam'] = {
 				currentData = nil
 			},
-            miniMap = {
+            ['miniMap'] = {
 				currentData = nil
 			},
-            hud = {
+            ['hud'] = {
 				currentData = nil
 			},
-            crossHair = {
+            ['crossHair'] = {
 				currentData = nil
 			},
-            Spotting = {
+            ['Spotting'] = {
 				currentData = nil
 			},
-            miniMapSpotting = {
+            ['miniMapSpotting'] = {
 				currentData = nil
 			},
-            nameTag = {
+            ['nameTag'] = {
 				currentData = nil
 			},
-            thirdPersonCam = {
+            ['thirdPersonCam'] = {
 				currentData = nil
 			},
-            regenerateHealth = {
+            ['regenerateHealth'] = {
 				currentData = nil
 			},
-            teamKillCountForKick = {
+            ['teamKillCountForKick'] = {
 				currentData = nil
 			},
-            teamKillValueForKick = {
+            ['teamKillValueForKick'] = {
 				currentData = nil
 			},
-            teamKillKillValueIncrease = {
+            ['teamKillKillValueIncrease'] = {
 				currentData = nil
 			},
-            teamKillKillValueDecreasePerSecond = {
+            ['teamKillKillValueDecreasePerSecond'] = {
 				currentData = nil
 			},
-            teamKillKickForBan = {
+            ['teamKillKickForBan'] = {
 				currentData = nil
 			},
-            idleTimeout = {
+            ['idleTimeout'] = {
 				currentData = nil
 			},
-            idleBanRounds = {
+            ['idleBanRounds'] = {
 				currentData = nil
 			},
-            vehicleSpawnAllowed = {
+            ['vehicleSpawnAllowed'] = {
 				currentData = nil
 			},
-            vehicleSpawnDelay = {
+            ['vehicleSpawnDelay'] = {
 				currentData = nil
 			},
-            soldierHealth = {
+            ['soldierHealth'] = {
 				currentData = nil
 			},
-            playerRespawnTime = {
+            ['playerRespawnTime'] = {
 				currentData = nil
 			},
-            playerManDownTime = {
+            ['playerManDownTime'] = {
 				currentData = nil
 			},
-            bulletDamage = {
+            ['bulletDamage'] = {
 				currentData = nil
 			},
-            gameModeCounter = {
+            ['gameModeCounter'] = {
 				currentData = nil
 			},
-            onlySquadLeaderSpawn = {
+            ['onlySquadLeaderSpawn'] = {
 				currentData = nil
 			},
-            unlockMode = {
+            ['unlockMode'] = {
 				currentData = nil
 			}
         },
-        vu = {
-            ColorCorrectionEnabled = {
+        ['vu'] = {
+            ['ColorCorrectionEnabled'] = {
 				currentData = nil
 			},
-            DesertingAllowed = {
+            ['DesertingAllowed'] = {
 				currentData = nil
 			},
-            DestructionEnabled = {
+            ['DestructionEnabled'] = {
 				currentData = nil
 			},
-            FadeInAll = {
+            ['FadeInAll'] = {
 				currentData = nil
 			},
-            FadeOutAll = {
+            ['FadeOutAll'] = {
 				currentData = nil
 			},
-            FrequencyMode = {
+            ['FrequencyMode'] = {
 				currentData = nil
 			},
-            HighPerformanceReplication = {
+            ['HighPerformanceReplication'] = {
 				currentData = nil
 			},
-            ServerBanner = {
+            ['ServerBanner'] = {
 				currentData = nil
 			},
-            SetTeamTicketCount = {
+            ['SetTeamTicketCount'] = {
 				currentData = nil
 			},
-            SpectatorCount = {
+            ['SpectatorCount'] = {
 				currentData = nil
 			},
-            SquadSize = {
+            ['SquadSize'] = {
 				currentData = nil
 			},
-            SunFlareEnabled = {
+            ['SunFlareEnabled'] = {
 				currentData = nil
 			},
-            SuppressionMultiplier = {
+            ['SuppressionMultiplier'] = {
 				currentData = nil
 			},
-            TimeScale = {
+            ['TimeScale'] = {
 				currentData = nil
 			},
-            VehicleDisablingEnabled = {
+            ['VehicleDisablingEnabled'] = {
 				currentData = nil
 			},
-            Fps = {
+            ['Fps'] = {
 				currentData = nil
 			},
-            FpsMa = {
+            ['FpsMa'] = {
 				currentData = nil
 			},
         }
@@ -247,17 +247,20 @@ function Server:OnLevelLoaded(p_LevelName, p_GameMode, p_Round, p_RoundsPerMap)
 end
 
 function Server:GetCurrentSettings()
-    for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
-		local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
-		local s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
-        l_Command['currentData'] = s_ReceivedData
-        m_Logger:Write('Get Command (' .. s_ConstructedString .. ') Value: ' .. s_ReceivedData)
+    for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
+
+		for l_Command, l_CommandInfo in pairs(l_CommandTable) do
+			local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
+			local s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
+			l_CommandTable['currentData'] = s_ReceivedData
+			m_Logger:Write('Get Command (' .. s_ConstructedString .. ') Value: ' .. tostring(s_ReceivedData[1]))
+		end
 	end
 end
 
 function Server:OnValuesUpdated(p_JSONData)
 	local s_DecodedData = json.decode(p_JSONData)
-    --- [1] Command (e.g. admin.say) [2] Arguments (e.g. "true, 1")#
+    --- [1] Command (e.g. admin.say) [2] Arguments (e.g. "true, 1")
     RCON:SendCommand(s_DecodedData[1], {s_DecodedData[2]})
 end
 
@@ -267,7 +270,7 @@ function Server:OnValuePullRequest(p_Player)
 end
 
 function Server:ConstructCommandString(p_CommandGroup, p_Command)
-    local s_ConstructedString = tostring(p_CommandGroup) .. "." .. tostring(p_Command)
+    local s_ConstructedString = tostring(tostring(p_CommandGroup) .. "." .. tostring(p_Command))
     return s_ConstructedString
 end
 
