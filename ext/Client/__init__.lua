@@ -265,21 +265,7 @@ function Client:OnPullRequest()
 end
 
 function Client:OnPullAnswer(p_CurrentSettingsJSON)
-    m_Logger:Write("OnPullAnswer " .. p_CurrentSettingsJSON)
     local s_ReceivedSettings = json.decode(p_CurrentSettingsJSON)
-
-    for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
-        if l_CommandGroup ~= nil and l_CommandTable ~= nil then
-            for l_Command, l_CommandInfo in pairs(l_CommandTable) do
-                if l_Command ~= nil and l_CommandInfo ~= nil then
-                    if s_ReceivedSettings[l_CommandGroup][l_Command][l_CommandInfo]["currentData"] ~= nil then
-                        l_CommandInfo['currentData'] = s_ReceivedSettings[l_CommandGroup][l_Command]["currentData"]
-                    end
-                end
-            end
-        end
-    end
-
     m_Logger:Write('*Full Table:' .. json.encode(self.m_ValidCommands))
     WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(self.m_ValidCommands)))
 end
