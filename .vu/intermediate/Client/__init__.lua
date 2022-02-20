@@ -1,7 +1,7 @@
 --[[
     Venice Unleashed - Intermediate Lua binding
     Type: __init__.lua
-    Generated on: Sun Feb 20 2022 18:51:49 GMT+0100 (Mitteleuropäische Normalzeit)
+    Generated on: Sun Feb 20 2022 18:58:16 GMT+0100 (Mitteleuropäische Normalzeit)
 --]]
 
 ---@meta

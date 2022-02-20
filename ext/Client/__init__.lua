@@ -306,31 +306,25 @@ end
 function Client:RegisterEvents()
 	NetEvents:Subscribe('IngameRCON:PullAnswer', self, self.OnPullAnswer)
     Events:Subscribe('WebUI:UpdateValues', self, self.OnWebUIUpdateValues)
+	Events:Subscribe('WebUI:PullRequest', self, self.OnPullRequest)
 end
 
 function Client:OnWebUIUpdateValues(p_JSONData)
 	NetEvents:Send('IngameRCON:UpdateValues', p_JSONData)
 end
 
-function Client:PullRequest()
+function Client:OnPullRequest()
 	NetEvents:Send('IngameRCON:PullRequest')
 end
 
 function Client:OnPullAnswer(p_CurrentSettingsJSON)
-	local s_CurrentSettings = json.decode(p_CurrentSettingsJSON)
+	local s_ReceivedSettings = json.decode(p_CurrentSettingsJSON)
 
 	for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
-        l_Command['currentData'] = s_CurrentSettings[l_CommandGroup][l_Command]["currentData"]
+        l_Command['currentData'] = s_ReceivedSettings[l_CommandGroup][l_Command]["currentData"]
 	end
-end
 
-function Client:ConstructCommandString(p_Command)
-	for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
-		local s_ConstructedString = l_CommandGroup .. "." .. l_Command
-		if l_Command == p_Command then
-			return s_ConstructedString
-		end
-	end
+	WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(self.m_ValidCommands)))
 end
 
 return Client()

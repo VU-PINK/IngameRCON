@@ -257,11 +257,20 @@ function Server:OnValuesUpdated(p_JSONData)
 	local s_DecodedData = json.decode(p_JSONData)
 end
 
-function Server:OnValuePullRequest(p_JSONData)
+function Server:OnValuePullRequest(p_Player)
 	local s_CurrentSettings = json.encode(self.m_ValidCommands)
     -- do smth
 
-    NetEvents:Dispatch('IngameRCON:PullAnswer', s_CurrentSettings)
+    NetEvents:SendTo('IngameRCON:PullAnswer', p_Player, s_CurrentSettings)
+end
+
+function Server:ConstructCommandString(p_Command)
+	for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
+		local s_ConstructedString = l_CommandGroup .. "." .. l_Command
+		if l_Command == p_Command then
+			return s_ConstructedString
+		end
+	end
 end
 
 return Server()
