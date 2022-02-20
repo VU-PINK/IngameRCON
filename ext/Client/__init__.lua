@@ -304,7 +304,9 @@ function Client:RegisterVars()
 end
 
 function Client:RegisterEvents()
+	-- Net
 	NetEvents:Subscribe('IngameRCON:PullAnswer', self, self.OnPullAnswer)
+	-- Events
     Events:Subscribe('WebUI:UpdateValues', self, self.OnWebUIUpdateValues)
 	Events:Subscribe('WebUI:PullRequest', self, self.OnPullRequest)
 end
