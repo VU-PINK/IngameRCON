@@ -1,1 +1,2 @@
--- Your shared code here
+---@type Logger
+Logger = require 'Logger'
