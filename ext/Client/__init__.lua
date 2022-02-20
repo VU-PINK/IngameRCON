@@ -278,7 +278,7 @@ function Client:OnPullAnswer(p_CurrentSettingsJSON)
         end
     end
 
-    m_Logger:Write('*Full Table:' .. json.encode(self.m_ValidCommands)))
+    m_Logger:Write('*Full Table:' .. json.encode(self.m_ValidCommands))
     WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(self.m_ValidCommands)))
 end
 
