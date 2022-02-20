@@ -266,8 +266,8 @@ end
 
 function Client:OnPullAnswer(p_CurrentSettingsJSON)
     local s_ReceivedSettings = json.decode(p_CurrentSettingsJSON)
-    m_Logger:Write('*Full Table:' .. json.encode(self.m_ValidCommands))
-    WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(self.m_ValidCommands)))
+    m_Logger:Write('*Full Table:' .. json.encode(s_ReceivedSettings))
+    WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(s_ReceivedSettings)))
 end
 
 return Client()
