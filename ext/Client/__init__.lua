@@ -10,294 +10,223 @@ function Client:RegisterVars()
 	self.m_ValidCommands = {
         admin = {
             password = {
-                description = "<password>",
-				currentData = nil
+                description = "<password>"
             },
             say = {
-                description = "<message, players>",
-				currentData = nil
+                description = "<message, players>"
             },
             yell = {
-                description = "<message, duration, players>",
-				currentData = nil
+                description = "<message, duration, players>"
 			},
             kick = {
-                description = "<soldier name, reason>",
-				currentData = nil
+                description = "<soldier name, reason>"
 			},
             move = {
-                description = "<name, teamID, squadID, forceKill>",
-				currentData = nil
+                description = "<name, teamID, squadID, forceKill>"
 			},
             kill = {
-                description = "<name>",
-				currentData = nil
+                description = "<name>"
 			},
             ban = {
-                description = "<id-type, id, timeout, reason>",
-				currentData = nil
+                description = "<id-type, id, timeout, reason>"
 			},
             banRemove = {
-                description = "<id-type, id>",
-				currentData = nil
+                description = "<id-type, id>"
 			},
             banClear = {
-                description = "clears the banlist",
-				currentData = nil
+                description = "clears the banlist"
 			},
             banList = {
-                description = "lists all banned players",
-				currentData = nil
+                description = "lists all banned players"
 			}
         },
         maps = {
             add = {
-                description = "<map, gamemode, rounds, offset>",
-				currentData = nil
+                description = "<map, gamemode, rounds, offset>"
 			},
             remove = {
-                description = "<index>",
-				currentData = nil
+                description = "<index>"
 			},
             clear = {
-                description = "- Clears the maplist",
-				currentData = nil
+                description = "- Clears the maplist"
 			},
             list = {
-                description = "<startIndex>",
-				currentData = nil
+                description = "<startIndex>"
 			},
             nextMap = {
-                description = "<index>",
-				currentData = nil
+                description = "<index>"
 			},
-            getMaps = {
-                description = " - Get indices for current & next map",
-				currentData = nil
+            getMapIndices = {
+                description = " - Get indices for current & next map"
 			},
             getRounds = {
-                description = " - Get current round and number of rounds",
-				currentData = nil
+                description = " - Get current round and number of rounds"
 			},
             endRound = {
-                description = "<teamID> - End Current round, declaring the specified team as winners",
-				currentData = nil
+                description = "<teamID> - End Current round, declaring the specified team as winners"
 			},
             runNext = {
-                description = " - Run the next round",
-				currentData = nil
+                description = " - Run the next round"
 			},
             restartRound = {
-                description = " - Restart the current round",
-				currentData = nil
+                description = " - Restart the current round"
 			},
 		},
         vars = {
             serverName = {
-                description = "<name>",
-				currentData = nil
+                description = "<name>"
 			},
             password = {
-                description = "<password>",
-				currentData = nil
+                description = "<password>"
 			},
             roundStartPlayerCount = {
-                description = "<numPlayers>",
-				currentData = nil
+                description = "<numPlayers>"
 			},
             roundRestartPlayerCount = {
-                description = "<numPlayers>",
-				currentData = nil
+                description = "<numPlayers>"
 			},
             preRound = {
-                description = "<time> - Set duration of pre-round",
-				currentData = nil
+                description = "<time> - Set duration of pre-round"
 			},
             serverMessage = {
-                description = "<message>",
-				currentData = nil
+                description = "<message>"
 			},
             friendlyfire = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             maxPlayers = {
-                description = "<numPlayers>",
-				currentData = nil
+                description = "<numPlayers>"
 			},
             serverDesc = {
-                description = "<description>",
-				currentData = nil
+                description = "<description>"
 			},
             killCam = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             miniMap = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             hud = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             crossHair = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             Spotting = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             miniMapSpotting = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             nameTag = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             thirdPersonCam = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             regenerateHealth = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             teamKillCountForKick = {
-                description = "<count>",
-				currentData = nil
+                description = "<count>"
 			},
             teamKillValueForKick = {
-                description = "<count>",
-				currentData = nil
+                description = "<count>"
 			},
             teamKillKillValueIncrease = {
-                description = "<count>",
-				currentData = nil
+                description = "<count>"
 			},
             teamKillKillValueDecreasePerSecond = {
-                description = "<count>",
-				currentData = nil
+                description = "<count>"
 			},
             teamKillKickForBan = {
-                description = "<count>",
-				currentData = nil
+                description = "<count>"
 			},
             idleTimeout = {
-                description = "<time>",
-				currentData = nil
+                description = "<time>"
 			},
             idleBanRounds = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             vehicleSpawnAllowed = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             vehicleSpawnDelay = {
-                description = "<percentage modifier>",
-				currentData = nil
+                description = "<percentage modifier>"
 			},
             soldierHealth = {
-                description = "<percentage modifier>",
-				currentData = nil
+                description = "<percentage modifier>"
 			},
             playerRespawnTime = {
-                description = "<percentage modifier>",
-				currentData = nil
+                description = "<percentage modifier>"
 			},
             playerManDownTime = {
-                description = "<percentage modifier>",
-				currentData = nil
+                description = "<percentage modifier>"
 			},
             bulletDamage = {
-                description = "<percentage modifier>",
-				currentData = nil
+                description = "<percentage modifier>"
 			},
             gameModeCounter = {
-                description = "<integer> - Set Ticket Scale",
-				currentData = nil
+                description = "<integer> - Set Ticket Scale"
 			},
             onlySquadLeaderSpawn = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             unlockMode = {
-                description = "<mode>",
-				currentData = nil
+                description = "<mode>"
 			}
         },
         vu = {
             ColorCorrectionEnabled = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             DesertingAllowed = {
-                description = "true/false",
-				currentData = nil
+                description = "true/false"
 			},
             DestructionEnabled = {
-                description = "true/false",
-				currentData = nil
+                description = "true/false"
 			},
             FadeInAll = {
-                description = "- Fade in all Players",
-				currentData = nil
+                description = "- Fade in all Players"
 			},
             FadeOutAll = {
-                description = "- Fade out all Players",
-				currentData = nil
+                description = "- Fade out all Players"
 			},
             FrequencyMode = {
-                description = " - return frequency of server",
-				currentData = nil
+                description = " - return frequency of server"
 			},
             HighPerformanceReplication = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             ServerBanner = {
-                description = "<.jpg link>",
-				currentData = nil
+                description = "<.jpg link>"
 			},
             SetTeamTicketCount = {
-                description = "<team, amount>",
-				currentData = nil
+                description = "<team, amount>"
 			},
             SpectatorCount = {
-                description = " - return spec count",
-				currentData = nil
+                description = " - return spec count"
 			},
             SquadSize = {
-                description = "<size>",
-				currentData = nil
+                description = "<size>"
 			},
             SunFlareEnabled = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             SuppressionMultiplier = {
-                description = "<float>",
-				currentData = nil
+                description = "<float>"
 			},
             TimeScale = {
-                description = "<float>",
-				currentData = nil
+                description = "<float>"
 			},
             VehicleDisablingEnabled = {
-                description = "<true/false>",
-				currentData = nil
+                description = "<true/false>"
 			},
             Fps = {
-                description = " - return server fps",
-				currentData = nil
+                description = " - return server fps"
 			},
             FpsMa = {
-                description = " - return 30-second moving average of the server FPS",
-				currentData = nil
+                description = " - return 30-second moving average of the server FPS"
 			},
         }
 	}

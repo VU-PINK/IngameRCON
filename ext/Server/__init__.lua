@@ -35,19 +35,21 @@ function Server:RegisterVars()
 				currentData = nil,
 				canGet = false
 			},
-            ['ban'] = {
+		},
+		['banList'] = {
+			['add'] = {
 				currentData = nil,
 				canGet = false
 			},
-            ['banRemove'] = {
+            ['remove'] = {
 				currentData = nil,
 				canGet = false
 			},
-            ['banClear'] = {
+            ['clear'] = {
 				currentData = nil,
 				canGet = false
 			},
-            ['banList'] = {
+            ['list'] = {
 				currentData = nil,
 				canGet = true
 			}
@@ -73,7 +75,7 @@ function Server:RegisterVars()
 				currentData = nil,
 				canGet = false
 			},
-            ['getMaps'] = {
+            ['getMapIndices'] = {
 				currentData = nil,
 				canGet = true
 			},
@@ -147,7 +149,7 @@ function Server:RegisterVars()
 				currentData = nil,
 				canGet = true
 			},
-            ['Spotting'] = {
+            ['3dSpotting'] = {
 				currentData = nil,
 				canGet = true
 			},
@@ -159,7 +161,7 @@ function Server:RegisterVars()
 				currentData = nil,
 				canGet = true
 			},
-            ['thirdPersonCam'] = {
+            ['3pCam'] = {
 				currentData = nil,
 				canGet = true
 			},
@@ -175,11 +177,11 @@ function Server:RegisterVars()
 				currentData = nil,
 				canGet = true
 			},
-            ['teamKillKillValueIncrease'] = {
+            ['teamKillValueIncrease'] = {
 				currentData = nil,
 				canGet = true
 			},
-            ['teamKillKillValueDecreasePerSecond'] = {
+            ['teamKillValueDecreasePerSecond'] = {
 				currentData = nil,
 				canGet = true
 			},
