@@ -327,7 +327,7 @@ function Server:GetCurrentSettings()
 
 			if l_CommandInfo.canGet then
 				s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
-				l_CommandTable['currentData'] = s_ReceivedData
+				l_CommandInfo['currentData'] = s_ReceivedData
 				m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
 
 				for _, l_Value in pairs(s_ReceivedData) do
