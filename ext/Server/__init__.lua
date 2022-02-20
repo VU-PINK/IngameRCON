@@ -12,223 +12,294 @@ function Server:RegisterVars()
     self.m_ValidCommands = {
         ['admin'] = {
             ['password'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
             },
             ['say'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
             },
             ['yell'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['kick'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['move'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['kill'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['ban'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['banRemove'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['banClear'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['banList'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			}
         },
         ['mapList'] = {
             ['add'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['remove'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['clear'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['list'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['nextMap'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['getMaps'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['getRounds'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['endRound'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['runNext'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['restartRound'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
 		},
         ['vars'] = {
             ['serverName'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['password'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['roundStartPlayerCount'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['roundRestartPlayerCount'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['preRound'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['serverMessage'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['friendlyfire'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['maxPlayers'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['serverDesc'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['killCam'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['miniMap'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['hud'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['crossHair'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['Spotting'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['miniMapSpotting'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['nameTag'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['thirdPersonCam'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['regenerateHealth'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['teamKillCountForKick'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['teamKillValueForKick'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['teamKillKillValueIncrease'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['teamKillKillValueDecreasePerSecond'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['teamKillKickForBan'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['idleTimeout'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['idleBanRounds'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['vehicleSpawnAllowed'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['vehicleSpawnDelay'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['soldierHealth'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['playerRespawnTime'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['playerManDownTime'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['bulletDamage'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['gameModeCounter'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['onlySquadLeaderSpawn'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['unlockMode'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			}
         },
         ['vu'] = {
             ['ColorCorrectionEnabled'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['DesertingAllowed'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['DestructionEnabled'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['FadeInAll'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['FadeOutAll'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['FrequencyMode'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['HighPerformanceReplication'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['ServerBanner'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['SetTeamTicketCount'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = false
 			},
             ['SpectatorCount'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['SquadSize'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['SunFlareEnabled'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['SuppressionMultiplier'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['TimeScale'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['VehicleDisablingEnabled'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['Fps'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
             ['FpsMa'] = {
-				currentData = nil
+				currentData = nil,
+				canGet = true
 			},
         }
 	}
@@ -248,12 +319,19 @@ end
 
 function Server:GetCurrentSettings()
     for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
-
+		local s_ReceivedData
 		for l_Command, l_CommandInfo in pairs(l_CommandTable) do
 			local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
-			local s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
-			l_CommandTable['currentData'] = s_ReceivedData
-			m_Logger:Write('Get Command (' .. s_ConstructedString .. ') Value: ' .. tostring(s_ReceivedData[1]))
+
+			if l_CommandInfo.canGet then
+				s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
+				l_CommandTable['currentData'] = s_ReceivedData
+				m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
+
+				for _, l_Value in pairs(s_ReceivedData) do
+					m_Logger:Write('Values: ' .. l_Value)
+				end
+			end
 		end
 	end
 end
