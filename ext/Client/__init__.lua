@@ -304,6 +304,7 @@ function Client:RegisterVars()
 end
 
 function Client:RegisterEvents()
+	NetEvents:Subscribe('IngameRCON:PullAnswer', self, self.OnPullAnswer)
     Events:Subscribe('WebUI:UpdateValues', self, self.OnWebUIUpdateValues)
 end
 
@@ -315,8 +316,12 @@ function Client:PullRequest()
 	NetEvents:Send('IngameRCON:PullRequest')
 end
 
-function Client:PullAnswer()
-	NetEvents:Subscribe('IngameRCON:PullAnswer')
+function Client:OnPullAnswer(p_CurrentSettingsJSON)
+	local s_CurrentSettings = json.decode(p_CurrentSettingsJSON)
+
+	for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
+        l_Command['currentData'] = s_CurrentSettings[l_CommandGroup][l_Command]["currentData"]
+	end
 end
 
 function Client:ConstructCommandString(p_Command)

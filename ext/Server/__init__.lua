@@ -240,6 +240,10 @@ function Server:RegisterEvents()
     Events:Subscribe('Level:Loaded', self, self.OnLevelLoaded)
 end
 
+function Server:OnLevelLoaded(p_LevelName, p_GameMode, p_Round, p_RoundsPerMap)
+    self:GetCurrentSettings()
+end
+
 function Server:GetCurrentSettings()
     for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
 		local s_ConstructedString = l_CommandGroup .. "." .. l_Command
@@ -254,7 +258,7 @@ function Server:OnValuesUpdated(p_JSONData)
 end
 
 function Server:OnValuePullRequest(p_JSONData)
-	local s_CurrentSettings
+	local s_CurrentSettings = json.encode(self.m_ValidCommands)
     -- do smth
 
     NetEvents:Dispatch('IngameRCON:PullAnswer', s_CurrentSettings)
