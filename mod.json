@@ -6,7 +6,7 @@
 	"URL": "https://veniceunleashed.net",
 	"Tags": "mod-template",
     "HasVeniceEXT": true,
-	"HasWebUI": false,
+	"HasWebUI": true,
     "Dependencies": {
         "veniceext": "^1.0.0"
     }

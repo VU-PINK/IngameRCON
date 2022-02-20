@@ -1,0 +1,29 @@
+.rs-drawer-header {
+    padding: 10px 40px 10px 60px;
+    
+    .rs-drawer-header-close {
+        top: 14px;
+    }
+}
+
+.rs-nav-subtle .rs-nav-item {
+    text-align: center;
+    padding: 12px 12px;
+}
+
+.rs-drawer-actions {
+    display: flex;
+    align-items: center;
+}
+
+.server-banner {
+    width: 100%;
+    margin-bottom: 8px;
+    background: #3c3f43;
+
+    img {
+        width: 100%;
+        max-height: 100px;
+        object-fit: contain;
+    }
+}
