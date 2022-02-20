@@ -16,11 +16,11 @@ function Logger:__init(p_ClassName, p_ActivateLogging)
 end
 
 function Logger:Write(p_Message)
-	if not RM_DEV.LOGGER_ENABLED then
+	if not LOGGER_ENABLED then
 		return
 	end
 
-	if RM_DEV.LOGGER_PRINT_ALL == true and self.className ~= nil then
+	if LOGGER_PRINT_ALL == true and self.className ~= nil then
 		goto continue
 
 	elseif self.debug == false or
@@ -35,11 +35,11 @@ function Logger:Write(p_Message)
 end
 
 function Logger:WriteTable(p_Table)
-	if not RM_DEV.LOGGER_ENABLED then
+	if not LOGGER_PRINT_ALL then
 		return
 	end
 
-    if RM_DEV.LOGGER_PRINT_ALL == true and self.className ~= nil then
+    if LOGGER_PRINT_ALL == true and self.className ~= nil then
         goto continue
 
     elseif self.debug == false or
