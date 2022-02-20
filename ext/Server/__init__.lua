@@ -257,8 +257,8 @@ end
 
 function Server:OnValuesUpdated(p_JSONData)
 	local s_DecodedData = json.decode(p_JSONData)
-    --- [1] Command (e.g. admin.say) [2] Arguments (e.g. {true, 1})
-    RCON:SendCommand(s_DecodedData[1], s_DecodedData[2])
+    --- [1] Command (e.g. admin.say) [2] Arguments (e.g. "true, 1")
+    RCON:SendCommand(s_DecodedData[1], {s_DecodedData[2]})
 end
 
 function Server:OnValuePullRequest(p_Player)
