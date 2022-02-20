@@ -264,15 +264,15 @@ end
 
 function Client:OnPullAnswer(p_CurrentSettingsJSON)
     print("OnPullAnswer " .. p_CurrentSettingsJSON)
-	local s_ReceivedSettings = json.decode(p_CurrentSettingsJSON)
+    local s_ReceivedSettings = json.decode(p_CurrentSettingsJSON)
 
-	for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
-        if s_ReceivedSettings[l_CommandGroup][l_Command]['canGet'] == true then
+    for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
+        if s_ReceivedSettings[l_CommandGroup][l_Command]["currentData"] ~= nil then
             l_Command['currentData'] = s_ReceivedSettings[l_CommandGroup][l_Command]["currentData"]
         end
-	end
+    end
 
-	WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(self.m_ValidCommands)))
+    WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(self.m_ValidCommands)))
 end
 
 return Client()
