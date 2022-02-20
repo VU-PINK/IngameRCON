@@ -249,7 +249,7 @@ end
 function Server:GetCurrentSettings()
     for l_CommandGroup, l_Command in pairs(self.m_ValidCommands) do
 		local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
-		local s_ReceivedData = RCON:SendCommand(s_ConstructedString)
+		local s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
         l_Command['currentData'] = s_ReceivedData
         m_Logger:Write('Get Command (' .. s_ConstructedString .. ') Value: ' .. s_ReceivedData)
 	end
@@ -257,7 +257,7 @@ end
 
 function Server:OnValuesUpdated(p_JSONData)
 	local s_DecodedData = json.decode(p_JSONData)
-    --- [1] Command (e.g. admin.say) [2] Arguments (e.g. "true, 1")
+    --- [1] Command (e.g. admin.say) [2] Arguments (e.g. "true, 1")#
     RCON:SendCommand(s_DecodedData[1], {s_DecodedData[2]})
 end
 
@@ -267,7 +267,7 @@ function Server:OnValuePullRequest(p_Player)
 end
 
 function Server:ConstructCommandString(p_CommandGroup, p_Command)
-    local s_ConstructedString = p_CommandGroup .. "." .. p_Command
+    local s_ConstructedString = tostring(p_CommandGroup) .. "." .. tostring(p_Command)
     return s_ConstructedString
 end
 
