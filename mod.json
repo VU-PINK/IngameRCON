@@ -1,0 +1,13 @@
+{
+    "Name": "VU Mod Template",
+    "Description": "This mod template will help you get started with VU modding by providing you with type information within VSCode",
+    "Version": "0.0.1",
+	"Authors": [],
+	"URL": "https://veniceunleashed.net",
+	"Tags": "mod-template",
+    "HasVeniceEXT": true,
+	"HasWebUI": false,
+    "Dependencies": {
+        "veniceext": "^1.0.0"
+    }
+}
