@@ -553,8 +553,21 @@ end
 
 function Server:OnValuesUpdated(p_JSONData)
 	local s_DecodedData = json.decode(p_JSONData)
-    --- [1] Command (e.g. admin.say) [2] Arguments (e.g. 'true, 1')
-    RCON:SendCommand(s_DecodedData[1], {s_DecodedData[2]})
+
+	for l_UICommand, l_Arguments in pairs(s_DecodedData) do
+
+		for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
+
+			for l_Command, l_CommandInfo in pairs(l_CommandTable) do
+				local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
+				if l_UICommand == s_ConstructedString and l_CommandInfo['currentData'] ~= l_Arguments then
+					--- [1] Command (e.g. admin.say) [2] Arguments (e.g. 'true, 1')
+					RCON:SendCommand(l_UICommand, {l_Arguments})
+					return
+				end
+			end
+		end
+	end
 end
 
 function Server:OnValuePullRequest(p_Player)
