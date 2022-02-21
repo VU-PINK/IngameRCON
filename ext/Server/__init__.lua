@@ -416,10 +416,10 @@ function Server:RegisterVars()
 				inputType = "switch"
 			},
             ['SuppressionMultiplier'] = {
-                description = "<float>",
+                description = "<percentage>",
 				currentData = nil,
 				canGet = true,
-				inputType = "integer"
+				inputType = "percentageModifier"
 			},
             ['TimeScale'] = {
                 description = "<float>",
