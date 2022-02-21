@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Button, CustomProvider, Drawer, Nav } from "rsuite";
+import { Button, CustomProvider, Drawer, Form, InputNumber, Nav } from "rsuite";
 
 import GeneralTab from "./tabs/GeneralTab";
 import VuTab from "./tabs/VuTab";
-import { sendToLua } from "./helpers";
+import { sendToLua, ToggleExtended } from "./helpers";
 
 import "./App.css";
 import "./App.scss";
@@ -16,8 +16,9 @@ const initFormValue = {
 
 const App: React.FC = () => {
     const [open, setOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<string>("general");
+    const [activeTab, setActiveTab] = useState<string|undefined>(undefined);
     const [formValue, setFormValue] = useState<any>(initFormValue);
+    const [tabs, setTabs] = useState<any>([]);
 
     /*
     * Debug
@@ -29,14 +30,63 @@ const App: React.FC = () => {
         }
     }
 
-    const renderTab = () => {
-        switch (activeTab) {
-            case "vu":
-                return <VuTab formValue={formValue} setFormValue={setFormValue} />;
-            case "general":
+    const getInputType = (tab: any, item: any) => {
+        switch (item.inputType) {
+            case "button":
+                return (
+                    <Button 
+                        block
+                        appearance="primary"
+                        size="sm"
+                        onClick={() => {
+                            sendToLua("WebUI:UpdateValues", JSON.stringify([[
+                                tab.name + "." + item.name,
+                                ""
+                            ]]));
+                        }}
+                    >
+                        {tab.name}.{item.name??""}
+                    </Button>
+                );
+            case "switch":
+                return (
+                    <Form.Control 
+                        name={tab.name + "." + item.name}
+                        accepter={ToggleExtended}
+                    />
+                );
+            case "float":
+            case "integer":
+                return (
+                    <Form.Control 
+                        name={tab.name + "." + item.name}
+                        accepter={InputNumber}
+                        style={{ width: "100%" }}
+                    />
+                );
+            case "alphanumeric":
+                return (
+                    <Form.Control 
+                        name={tab.name + "." + item.name}
+                    />
+                );
+            case "percentageModifier":
+                return (
+                    <Form.Control 
+                        name={tab.name + "." + item.name}
+                        accepter={InputNumber}
+                        style={{ width: "100%" }}
+                        postfix="%"
+                    />
+                );
+            case "none":
             default:
-                return <GeneralTab />;
+                return <></>;
         }
+    }
+
+    const getCurrentTab = () => {
+        return tabs.filter((tab: any) => tab.name === activeTab)[0];
     }
 
     const handleSave = () => {
@@ -44,22 +94,44 @@ const App: React.FC = () => {
         for (const [key, value] of Object.entries(formValue)) {
             temp.push([
                 key,
-                value
+                value??""
             ]);
         }
         sendToLua("WebUI:UpdateValues", JSON.stringify(temp));
-        setOpen(false);
+        // setOpen(false);
     }
 
     window.OnSyncValues = (values: string) => {
-        var _values = undefined;
-        try {
-            _values = JSON.parse(values)
-        } catch (error) {
-            return;
+        let _tabs: any = [];
+        let _allItems: any = {};
+        Object.entries(values).forEach((value: any, _: any) => {
+            let _items: any = [];
+            Object.entries(value[1]).forEach((item: any, _: any) => {
+                _items.push({
+                    name: item[0],
+                    description: item[1].description??"",
+                    canGet: item[1].canGet,
+                    inputType: item[1].inputType??"none",
+                });
+
+                if (item[1].canGet === true) {
+                    let val:any = item[1].currentData[1];
+                    if (item[1].inputType === "switch") {
+                        val = item[1].currentData[1] === "true" ? true : false;
+                    }
+                    _allItems[value[0] + "." + item[0]] = val;
+                }
+            });
+            _tabs.push({
+                name: value[0],
+                items: _items,
+            });
+        });
+        setTabs(_tabs);
+        if (activeTab === undefined) {
+            setActiveTab(Object.entries(values)[0][0]);
         }
-        console.log(_values);
-        setFormValue(_values);
+        setFormValue(_allItems);
     }
 
     window.OnSetMenu = (open: boolean) => {
@@ -72,11 +144,20 @@ const App: React.FC = () => {
 
     useEffect(() => {
         if (open) {
-            sendToLua("WebUI:PullRequest");
-        }
-    }, [open])
-    
+            if (navigator.userAgent.includes("VeniceUnleashed")) {
+                WebUI.Call("EnableKeyboard");
+                WebUI.Call("EnableMouse");
 
+            }
+            sendToLua("WebUI:PullRequest");
+        } else {
+            if (navigator.userAgent.includes("VeniceUnleashed")) {
+                WebUI.Call("ResetKeyboard");
+                WebUI.Call("ResetMouse");
+            }
+        }
+    }, [open]);
+    
     return (
         <CustomProvider theme="dark">
             {debugMode &&
@@ -96,7 +177,7 @@ const App: React.FC = () => {
             <div id="debug">
                 <Button onClick={() => setOpen(true)}>Open</Button>
                 <Button onClick={() => setFormValue(initFormValue)}>Reset</Button>
-                {JSON.stringify(formValue)}
+                {/*JSON.stringify(formValue)*/}
             </div>
             
             <Drawer 
@@ -116,29 +197,43 @@ const App: React.FC = () => {
                         </Button>
                     </Drawer.Actions>
                 </Drawer.Header>
-                <div>
+                <div className="drawer-nav">
                     <Nav 
                         appearance="subtle"
                         activeKey={activeTab}
                         onSelect={setActiveTab}
                         justified
                     >
-                        <Nav.Item eventKey="general">
-                            General
-                        </Nav.Item>
-                        <Nav.Item eventKey="vu">
-                            Venice Unleashed
-                        </Nav.Item>
-                        <Nav.Item eventKey="admin">
-                            Admin
-                        </Nav.Item>
-                        <Nav.Item eventKey="maps">
-                            Maps
-                        </Nav.Item>
+                        {tabs.map((tab: any, index: number) => (
+                            <Nav.Item eventKey={tab.name} key={index}>
+                                {tab.name}
+                            </Nav.Item>
+                        ))}
                     </Nav>
                 </div>
                 <Drawer.Body>
-                    {renderTab()}
+                    <Form
+                        fluid
+                        formValue={formValue}
+                        onChange={formValue => setFormValue(formValue)}
+                    >
+                        {getCurrentTab() !== undefined &&
+                            <>
+                                {getCurrentTab().items.sort((a: any, b: any) => String(a.inputType).localeCompare(b.inputType)).map((item: any) => (
+                                    <Form.Group controlId={getCurrentTab().name + "." + item.name}>
+                                        <Form.ControlLabel>{getCurrentTab().name + "." + item.name}</Form.ControlLabel>
+                                        {getInputType(
+                                            getCurrentTab(),
+                                            item
+                                        )}
+                                        <Form.HelpText>
+                                            {item.description}
+                                        </Form.HelpText>
+                                    </Form.Group>
+                                ))}
+                            </>
+                        }
+                    </Form>
                 </Drawer.Body>
             </Drawer>
         </CustomProvider>
