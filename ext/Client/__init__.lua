@@ -41,7 +41,7 @@ function Client:RegisterVars()
         ['XP5_004'] = {'End Game', {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
     }
 
-    self.IsAdmin = false
+    self.IsAdmin = true
 end
 
 function Client:RegisterEvents()
@@ -58,12 +58,15 @@ end
 
 function Client:OnExtensionLoaded()
 	WebUI:Init()
-    WebUI:Hide()
+
+    if not self.IsAdmin then
+        WebUI:Hide()
+    end
 end
 
 function Client:OnClientUpdateInput()
-    -- TODO: Check if admin
 	if self.IsAdmin or DEBUG and InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
+        WebUI:ExecuteJS(string.format("OnSyncMaps(%s);", json.encode(self.m_AvailableMaps)))
         WebUI:ExecuteJS("OnToggleMenu();")
 	end
 end

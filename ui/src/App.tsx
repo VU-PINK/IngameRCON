@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Button, CustomProvider, Drawer, Form, InputNumber, Nav } from "rsuite";
+import { Button, Col, CustomProvider, Drawer, Form, InputNumber, List, Nav, Row, SelectPicker } from "rsuite";
 
 import GeneralTab from "./tabs/GeneralTab";
 import VuTab from "./tabs/VuTab";
-import { sendToLua, ToggleExtended } from "./helpers";
+import { GamemodeNames, LevelNames, sendToLua, ToggleExtended } from "./helpers";
 
 import "./App.css";
 import "./App.scss";
@@ -19,6 +19,19 @@ const App: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string|undefined>(undefined);
     const [formValue, setFormValue] = useState<any>(initFormValue);
     const [tabs, setTabs] = useState<any>([]);
+
+    const [maps, setMaps] = useState<any[]>([]);
+    const [gamemodes, setGamemodes] = useState<any[]>([]);
+    const [selectedMap, setSelectedMap] = useState<any>(null);
+    const [selectedGamemode, setSelectedGamemode] = useState<any>(null);
+    const [rounds, setRounds] = useState<number>(1);
+
+    const [data, setData] = useState([
+        { text: 'Roses are red' },
+        { text: 'Violets are blue' },
+        { text: 'Sugar is sweet' },
+        { text: 'And so are you' }
+    ]);
 
     /*
     * Debug
@@ -134,6 +147,20 @@ const App: React.FC = () => {
         setFormValue(_allItems);
     }
 
+    window.OnSyncMaps = (values: any) => {
+        let tempMaps: any = [];
+        Object.entries(values).forEach((element: any) => {
+            console.log(element);
+            tempMaps.push({
+                label: LevelNames[element[0]] + " (" + element[0] + ")",
+                value: element[0],
+                gameModes: element[2],
+                type: element[1],
+            });
+        });
+        setMaps(tempMaps);
+    }
+
     window.OnSetMenu = (open: boolean) => {
         setOpen(open);
     }
@@ -157,6 +184,36 @@ const App: React.FC = () => {
             }
         }
     }, [open]);
+
+    useEffect(() => {
+        if (selectedMap !== null) {
+            setSelectedGamemode(null);
+            const foundMap = maps.find((map: any) => map.value === selectedMap);
+            if (foundMap) {
+                let tempGamemodes: any = [];
+                foundMap.gameModes.forEach((element: any) => {
+                    tempGamemodes.push({
+                        label: GamemodeNames[element] + " (" + element + ")",
+                        value: element,
+                    });
+                });
+                setGamemodes(tempGamemodes);
+            }
+        } else {
+            setSelectedGamemode(null);
+            setGamemodes([]);
+        }
+    }, [selectedMap]);
+
+    const handleSortEnd = ({ oldIndex, newIndex }: any) => {
+        setData(prvData => {
+            const moveData = prvData.splice(oldIndex, 1);
+            const newData = [...prvData];
+            newData.splice(newIndex, 0, moveData[0]);
+            return newData;
+        });
+    };
+
     
     return (
         <CustomProvider theme="dark">
@@ -217,10 +274,72 @@ const App: React.FC = () => {
                         formValue={formValue}
                         onChange={formValue => setFormValue(formValue)}
                     >
+                        <Row>
+                            <Col md={8}>
+                                <SelectPicker
+                                    data={maps}
+                                    block
+                                    placeholder="Map"
+                                    onChange={(value: string) => setSelectedMap(value)}
+                                    value={selectedMap}
+                                    groupBy="type"
+                                />
+                            </Col>
+                            <Col md={8}>
+                                <SelectPicker
+                                    data={gamemodes}
+                                    block
+                                    placeholder="Gamemode"
+                                    disabled={selectedMap === null}
+                                    onChange={(value: string) => setSelectedGamemode(value)}
+                                    value={selectedGamemode}
+                                />
+                            </Col>
+                            <Col md={4}>
+                                <InputNumber
+                                    min={1}
+                                    max={100}
+                                    defaultValue={1}
+                                    value={rounds}
+                                    onChange={(value: any) => setRounds(parseInt(value))}
+                                    disabled={selectedGamemode === null}
+                                />
+                            </Col>
+                            <Col md={4}>
+                                <Button
+                                    block
+                                    appearance="primary"
+                                    disabled={selectedMap === null || selectedGamemode === null}
+                                    onClick={() => {
+                                        setSelectedMap(null);
+                                        setSelectedGamemode(null);
+                                    }}
+                                >
+                                    Add
+                                </Button>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={24}>
+                                <List sortable onSort={handleSortEnd}>
+                                    {data.map(({ text }, index) => (
+                                        <List.Item key={index} index={index}>
+                                            {text}
+                                        </List.Item>
+                                    ))}
+                                </List>
+                            </Col>
+                        </Row>
+                        
                         {getCurrentTab() !== undefined &&
                             <>
-                                {getCurrentTab().items.sort((a: any, b: any) => String(a.inputType).localeCompare(b.inputType)).map((item: any) => (
-                                    <Form.Group controlId={getCurrentTab().name + "." + item.name}>
+                                {getCurrentTab()
+                                .items
+                                .sort((a: any, b: any) => String(a.inputType)
+                                .localeCompare(b.inputType))
+                                .map((item: any, index: number) => 
+                                (
+                                    <Form.Group controlId={getCurrentTab().name + "." + item.name} key={index}>
                                         <Form.ControlLabel>{getCurrentTab().name + "." + item.name}</Form.ControlLabel>
                                         {getInputType(
                                             getCurrentTab(),
@@ -245,6 +364,7 @@ export default App;
 declare global {
     interface Window {
         OnSyncValues: (values: string) => void;
+        OnSyncMaps: (values: string) => void;
         OnSetMenu: (open: boolean) => void;
         OnToggleMenu: () => void;
     }
