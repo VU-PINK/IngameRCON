@@ -538,7 +538,7 @@ function Server:OnLevelLoaded(p_LevelName, p_GameMode, p_Round, p_RoundsPerMap)
 end
 
 function Server:OnPlayerAuthenticated(p_Player)
-	if self.Admins[p_Player.name] ~= nil and self.Admins[p_Player.name][1] ~= nil then
+	if self.Admins[p_Player.name] then
 		NetEvents:SendTo('IngameRCON:IsAdmin', p_Player, true)
 	end
 end
@@ -563,7 +563,7 @@ function Server:GetCurrentSettings()
 end
 
 function Server:OnValuesUpdated(p_Player, p_JSONData)
-	if self.Admins[p_Player.name] ~= nil and self.Admins[p_Player.name][1] ~= nil then
+	if self.Admins[p_Player.name] then
 		local s_DecodedData = json.decode(p_JSONData)
 		for _, l_Arguments in ipairs(s_DecodedData) do
 			local l_Cmd = l_Arguments[1]
@@ -586,7 +586,7 @@ function Server:OnValuesUpdated(p_Player, p_JSONData)
 end
 
 function Server:OnValuePullRequest(p_Player)
-	if self.Admins[p_Player.name] ~= nil and self.Admins[p_Player.name][1] ~= nil then
+	if self.Admins[p_Player.name] then
 		local s_CurrentSettings = json.encode(self.m_ValidCommands)
 		NetEvents:SendTo('IngameRCON:PullAnswer', p_Player, s_CurrentSettings)
 	else
@@ -600,7 +600,9 @@ function Server:ConstructCommandString(p_CommandGroup, p_Command)
 end
 
 function Server:OnAdminBroadcast(p_PlayerName, p_Abilitities)
-    self.Admins[p_PlayerName] = p_Abilitities
+	if p_Abilitities ~= nil then
+    	self.Admins[p_PlayerName] = true
+	end
 
 	local s_Player = PlayerManager:GetPlayerByName(p_PlayerName)
 	if s_Player ~= nil and p_Abilitities ~= nil then

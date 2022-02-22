@@ -47,7 +47,7 @@ end
 function Client:RegisterEvents()
 	-- Net
 	NetEvents:Subscribe('IngameRCON:PullAnswer', self, self.OnPullAnswer)
-    NetEvents:SendTo('IngameRCON:IsAdmin', self, self.OnServerAdminCheck)
+    NetEvents:Subscribe('IngameRCON:IsAdmin', self, self.OnServerAdminCheck)
 	-- Events
 	Events:Subscribe('Extension:Loaded', self, self.OnExtensionLoaded)
     Events:Subscribe('Client:UpdateInput', self, self.OnClientUpdateInput)
