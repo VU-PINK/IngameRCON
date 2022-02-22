@@ -573,7 +573,7 @@ function Server:OnValuesUpdated(p_Player, p_JSONData)
 					local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
 					if l_Cmd == s_ConstructedString and l_CommandInfo['currentData'] ~= l_Args then
-						--- [1] Command (e.g. admin.say) [2] Arguments (e.g. 'true, 1')
+						--- [1] Command (e.g. mapList.add) [2] Arguments {"MP_001", "RushLarge0", "1"})
 						RCON:SendCommand(l_Cmd, { tostring(l_Args) })
 					end
 				end
