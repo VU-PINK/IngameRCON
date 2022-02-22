@@ -10,35 +10,35 @@ end
 
 function Client:RegisterVars()
     self.m_AvailableMaps = {
-        ['MP_001'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['MP_003'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['MP_007'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['MP_011'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['MP_012'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['MP_013'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['MP_017'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['MP_018'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['MP_Subway'] = {'Vanilla'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP1_001'] = {'Back to Karkand'}, {'ConquestAssaultLarge0', 'ConquestAssaultSmall0', 'ConquestAssaultSmall1', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP1_002'] = {'Back to Karkand'}, {'ConquestAssaultSmall0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP1_003'] = {'Back to Karkand'}, {'ConquestAssaultLarge0', 'ConquestAssaultSmall0', 'ConquestAssaultSmall1', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP1_004'] = {'Back to Karkand'}, {'ConquestAssaultLarge0', 'ConquestAssaultSmall0', 'ConquestAssaultSmall1', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP2_Palace'] = {'Close Quarters'}, {'Domination0', 'GunMaster0', 'SquadDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP2_Office'] = {'Close Quarters'}, {'Domination0', 'GunMaster0', 'SquadDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP2_Factory'] = {'Close Quarters'}, {'Domination0', 'GunMaster0', 'SquadDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP2_Skybar'] = {'Close Quarters'}, {'Domination0', 'GunMaster0', 'SquadDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP3_Alborz'] = {'Armored Shield'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TankSuperiority0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP3_Shield'] = {'Armored Shield'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TankSuperiority0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP3_Desert'] = {'Armored Shield'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TankSuperiority0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP3_Valley'] = {'Armored Shield'}, {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TankSuperiority0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP4_Parl'] = {'Aftermath'}, {'ConquestLarge0', 'ConquestSmall0', 'GunMaster0', 'RushLarge0', 'Scavenger0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP4_Quake'] = {'Aftermath'}, {'ConquestLarge0', 'ConquestSmall0', 'GunMaster0', 'RushLarge0', 'Scavenger0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP4_FD'] = {'Aftermath'}, {'ConquestLarge0', 'ConquestSmall0', 'GunMaster0', 'RushLarge0', 'Scavenger0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP4_Rubble'] = {'Aftermath'}, {'ConquestAssaultLarge0', 'ConquestAssaultSmall0', 'GunMaster0', 'RushLarge0', 'Scavenger0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP5_001'] = {'End Game'}, {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP5_002'] = {'End Game'}, {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP5_003'] = {'End Game'}, {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
-        ['XP5_004'] = {'End Game'}, {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
+        ['MP_001'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['MP_003'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['MP_007'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['MP_011'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['MP_012'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['MP_013'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['MP_017'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['MP_018'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['MP_Subway'] = {'Vanilla', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP1_001'] = {'Back to Karkand', {'ConquestAssaultLarge0', 'ConquestAssaultSmall0', 'ConquestAssaultSmall1', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP1_002'] = {'Back to Karkand', {'ConquestAssaultSmall0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP1_003'] = {'Back to Karkand', {'ConquestAssaultLarge0', 'ConquestAssaultSmall0', 'ConquestAssaultSmall1', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP1_004'] = {'Back to Karkand', {'ConquestAssaultLarge0', 'ConquestAssaultSmall0', 'ConquestAssaultSmall1', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP2_Palace'] = {'Close Quarters', {'Domination0', 'GunMaster0', 'SquadDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP2_Office'] = {'Close Quarters', {'Domination0', 'GunMaster0', 'SquadDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP2_Factory'] = {'Close Quarters', {'Domination0', 'GunMaster0', 'SquadDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP2_Skybar'] = {'Close Quarters', {'Domination0', 'GunMaster0', 'SquadDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP3_Alborz'] = {'Armored Shield', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TankSuperiority0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP3_Shield'] = {'Armored Shield', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TankSuperiority0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP3_Desert'] = {'Armored Shield', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TankSuperiority0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP3_Valley'] = {'Armored Shield', {'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TankSuperiority0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP4_Parl'] = {'Aftermath', {'ConquestLarge0', 'ConquestSmall0', 'GunMaster0', 'RushLarge0', 'Scavenger0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP4_Quake'] = {'Aftermath', {'ConquestLarge0', 'ConquestSmall0', 'GunMaster0', 'RushLarge0', 'Scavenger0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP4_FD'] = {'Aftermath', {'ConquestLarge0', 'ConquestSmall0', 'GunMaster0', 'RushLarge0', 'Scavenger0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP4_Rubble'] = {'Aftermath', {'ConquestAssaultLarge0', 'ConquestAssaultSmall0', 'GunMaster0', 'RushLarge0', 'Scavenger0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP5_001'] = {'End Game', {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP5_002'] = {'End Game', {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP5_003'] = {'End Game', {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
+        ['XP5_004'] = {'End Game', {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
     }
 
     self.IsAdmin = false
@@ -63,7 +63,7 @@ end
 
 function Client:OnClientUpdateInput()
     -- TODO: Check if admin
-	if self.IsAdmin and InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
+	if self.IsAdmin or DEBUG and InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
         WebUI:ExecuteJS("OnToggleMenu();")
 	end
 end
