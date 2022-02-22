@@ -40,11 +40,14 @@ function Client:RegisterVars()
         ['XP5_003'] = {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
         ['XP5_004'] = {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'},
     }
+
+    self.IsAdmin = false
 end
 
 function Client:RegisterEvents()
 	-- Net
 	NetEvents:Subscribe('IngameRCON:PullAnswer', self, self.OnPullAnswer)
+    NetEvents:SendTo('IngameRCON:IsAdmin', self, self.OnServerAdminCheck)
 	-- Events
 	Events:Subscribe('Extension:Loaded', self, self.OnExtensionLoaded)
     Events:Subscribe('Client:UpdateInput', self, self.OnClientUpdateInput)
@@ -59,7 +62,7 @@ end
 
 function Client:OnClientUpdateInput()
     -- TODO: Check if admin
-	if InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
+	if self.IsAdmin and InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
         WebUI:ExecuteJS("OnToggleMenu();")
 	end
 end
@@ -85,6 +88,10 @@ function Client:OnMapRegister(p_MapTable)
         m_Logger:Write('Received Custom Map: ' .. p_MapTable[1] .. ' with Modes: ' .. p_MapTable[2])
         self.m_AvailableMaps[p_MapTable[1]] = p_MapTable[2]
     end
+end
+
+function Client:OnServerAdminCheck(p_Boolean)
+    self.IsAdmin = p_Boolean
 end
 
 return Client()

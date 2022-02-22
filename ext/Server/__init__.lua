@@ -518,6 +518,8 @@ function Server:RegisterVars()
 			},
         }
 	}
+
+	self.Admins = {}
 end
 
 function Server:RegisterEvents()
@@ -526,10 +528,19 @@ function Server:RegisterEvents()
     NetEvents:Subscribe('IngameRCON:PullRequest', self, self.OnValuePullRequest)
     -- Events
     Events:Subscribe('Level:Loaded', self, self.OnLevelLoaded)
+	Events:Subscribe('GameAdmin:Player', self, self.OnAdminBroadcast)
+    Events:Subscribe('GameAdmin:Clear', self, self.OnAdminClear)
+	Events:Subscribe('Player:Authenticated', self, self.OnPlayerAuthenticated)
 end
 
 function Server:OnLevelLoaded(p_LevelName, p_GameMode, p_Round, p_RoundsPerMap)
     self:GetCurrentSettings()
+end
+
+function Server:OnPlayerAuthenticated(p_Player)
+	if self.Admins[p_Player.name] ~= nil and self.Admins[p_Player.name][1] ~= nil then
+		NetEvents:SendTo('IngameRCON:IsAdmin', p_Player, true)
+	end
 end
 
 function Server:GetCurrentSettings()
@@ -552,32 +563,58 @@ function Server:GetCurrentSettings()
 end
 
 function Server:OnValuesUpdated(p_Player, p_JSONData)
-	local s_DecodedData = json.decode(p_JSONData)
-	for _, l_Arguments in ipairs(s_DecodedData) do
-		local l_Cmd = l_Arguments[1]
-		local l_Args = l_Arguments[2]
-		for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
-			for l_Command, l_CommandInfo in pairs(l_CommandTable) do
-				local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
+	if self.Admins[p_Player.name] ~= nil and self.Admins[p_Player.name][1] ~= nil then
+		local s_DecodedData = json.decode(p_JSONData)
+		for _, l_Arguments in ipairs(s_DecodedData) do
+			local l_Cmd = l_Arguments[1]
+			local l_Args = l_Arguments[2]
+			for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
+				for l_Command, l_CommandInfo in pairs(l_CommandTable) do
+					local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
-				if l_Cmd == s_ConstructedString and l_CommandInfo['currentData'] ~= l_Args then
-					--- [1] Command (e.g. admin.say) [2] Arguments (e.g. 'true, 1')
-					RCON:SendCommand(l_Cmd, { tostring(l_Args) })
+					if l_Cmd == s_ConstructedString and l_CommandInfo['currentData'] ~= l_Args then
+						--- [1] Command (e.g. admin.say) [2] Arguments (e.g. 'true, 1')
+						RCON:SendCommand(l_Cmd, { tostring(l_Args) })
+					end
 				end
 			end
 		end
+		self:GetCurrentSettings()
+	else
+		m_Logger:Warning('Player is not Admin')
 	end
-	self:GetCurrentSettings()
 end
 
 function Server:OnValuePullRequest(p_Player)
-	local s_CurrentSettings = json.encode(self.m_ValidCommands)
-    NetEvents:SendTo('IngameRCON:PullAnswer', p_Player, s_CurrentSettings)
+	if self.Admins[p_Player.name] ~= nil and self.Admins[p_Player.name][1] ~= nil then
+		local s_CurrentSettings = json.encode(self.m_ValidCommands)
+		NetEvents:SendTo('IngameRCON:PullAnswer', p_Player, s_CurrentSettings)
+	else
+		m_Logger:Warning('Player is not Admin')
+	end
 end
 
 function Server:ConstructCommandString(p_CommandGroup, p_Command)
     local s_ConstructedString = tostring(tostring(p_CommandGroup) .. '.' .. tostring(p_Command))
     return s_ConstructedString
+end
+
+function Server:OnAdminBroadcast(p_PlayerName, p_Abilitities)
+    self.Admins[p_PlayerName] = p_Abilitities
+
+	local s_Player = PlayerManager:GetPlayerByName(p_PlayerName)
+	if s_Player ~= nil and p_Abilitities ~= nil then
+		NetEvents:SendTo('IngameRCON:IsAdmin', s_Player, true)
+	end
+end
+
+function Server:OnAdminClear()
+	self.Admins = {}
+
+	local s_Players = PlayerManager:GetPlayers()
+	for _, l_Player in ipairs(s_Players) do
+		NetEvents:SendTo('IngameRCON:IsAdmin', l_Player, false)
+	end
 end
 
 return Server()
