@@ -559,7 +559,7 @@ function Server:OnValuesUpdated(p_Player, p_JSONData)
 		for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
 			for l_Command, l_CommandInfo in pairs(l_CommandTable) do
 				local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
-				
+
 				if l_Cmd == s_ConstructedString and l_CommandInfo['currentData'] ~= l_Args then
 					--- [1] Command (e.g. admin.say) [2] Arguments (e.g. 'true, 1')
 					RCON:SendCommand(l_Cmd, { tostring(l_Args) })
