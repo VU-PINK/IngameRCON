@@ -58,6 +58,7 @@ end
 
 function Client:OnExtensionLoaded()
 	WebUI:Init()
+    WebUI:Hide()
 end
 
 function Client:OnClientUpdateInput()
@@ -92,6 +93,12 @@ end
 
 function Client:OnServerAdminCheck(p_Boolean)
     self.IsAdmin = p_Boolean
+
+    if p_Boolean then
+        WebUI:Show()
+    else
+        WebUI:Hide()
+    end
 end
 
 return Client()
