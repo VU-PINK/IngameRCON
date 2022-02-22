@@ -84,7 +84,7 @@ function Client:OnPullAnswer(p_CurrentSettingsJSON)
 end
 
 function Client:OnMapRegister(p_MapTable)
-    --Table has to look like: {'NameOfMap', {'Mode1, Mode2, Mode3'}}
+    --Table has to look like: {'NameOfMap', {'CustomGroup'}, {'Mode1, Mode2, Mode3'}}
     if p_MapTable ~= nil and type(p_MapTable[1] == 'string' and type(p_MapTable[2]) == 'table') then
         m_Logger:Write('Received Custom Map: ' .. p_MapTable[1] .. ' with Modes: ' .. p_MapTable[2])
         self.m_AvailableMaps[p_MapTable[1]] = p_MapTable[2]
