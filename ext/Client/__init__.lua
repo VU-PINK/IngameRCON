@@ -65,10 +65,12 @@ function Client:OnExtensionLoaded()
 end
 
 function Client:OnClientUpdateInput()
-	if self.IsAdmin or DEBUG and InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
-        WebUI:ExecuteJS(string.format("OnSyncMaps(%s);", json.encode(self.m_AvailableMaps)))
-        WebUI:ExecuteJS("OnToggleMenu();")
-	end
+    if InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
+        if self.IsAdmin or DEBUG then
+            WebUI:ExecuteJS(string.format("OnSyncMaps(%s);", json.encode(self.m_AvailableMaps)))
+            WebUI:ExecuteJS("OnToggleMenu();")
+        end
+    end
 end
 
 function Client:OnWebUIUpdateValues(p_JSONData)

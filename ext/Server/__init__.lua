@@ -108,10 +108,10 @@ function Server:RegisterVars()
 			},
             ['list'] = {
 				title = '',
-				description = '<startIndex>',
+				description = '',
 				currentData = nil,
-				canGet = false,
-				inputType = 'integer'
+				canGet = true,
+				inputType = 'maplist'
 			},
             ['nextMap'] = {
 				title = '',

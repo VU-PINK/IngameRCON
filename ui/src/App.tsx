@@ -45,6 +45,11 @@ const App: React.FC = () => {
 
     const getInputType = (tab: any, item: any) => {
         switch (item.inputType) {
+            case "maplist":
+                return <>
+                    {console.log(formValue)}
+                    {JSON.stringify(item)}
+                </>;
             case "button":
                 return (
                     <Button 
@@ -117,6 +122,7 @@ const App: React.FC = () => {
     window.OnSyncValues = (values: string) => {
         let _tabs: any = [];
         let _allItems: any = {};
+        console.log(values);
         Object.entries(values).forEach((value: any, _: any) => {
             let _items: any = [];
             Object.entries(value[1]).forEach((item: any, _: any) => {
@@ -154,8 +160,8 @@ const App: React.FC = () => {
             tempMaps.push({
                 label: LevelNames[element[0]] + " (" + element[0] + ")",
                 value: element[0],
-                gameModes: element[2],
-                type: element[1],
+                gameModes: element[1][1],
+                type: element[1][0],
             });
         });
         setMaps(tempMaps);
