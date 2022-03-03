@@ -526,6 +526,7 @@ function Server:RegisterEvents()
     -- Net
     NetEvents:Subscribe('IngameRCON:UpdateValues', self, self.OnValuesUpdated)
     NetEvents:Subscribe('IngameRCON:PullRequest', self, self.OnValuePullRequest)
+	NetEvents:Subscribe('IngameRCON:UpdateMaplist', self, self.OnUpdateMaplist)
     -- Events
     Events:Subscribe('Level:Loaded', self, self.OnLevelLoaded)
 	Events:Subscribe('GameAdmin:Player', self, self.OnAdminBroadcast)
@@ -616,6 +617,20 @@ function Server:OnAdminClear()
 	local s_Players = PlayerManager:GetPlayers()
 	for _, l_Player in ipairs(s_Players) do
 		NetEvents:SendTo('IngameRCON:IsAdmin', l_Player, false)
+	end
+end
+
+function Server:OnUpdateMaplist(p_JSONData)
+	local s_MapListTable = json.decode(p_JSONData)
+	-- clear old maplist
+	RCON:SendCommand("mapList.clear")
+
+	for l_Index, l_Arguments in ipairs(s_MapListTable) do
+		local s_Name = l_Arguments[1]
+		local s_Gamemode = l_Arguments[2]
+		local s_Rounds = l_Arguments[3]
+		RCON:SendCommand("mapList.add", {s_Name, s_Gamemode, s_Rounds})
+		m_Logger:Write("Maplist Index: " .. l_Index .. " | Gamemode: " .. s_Gamemode .. " | Rounds: " .. s_Rounds)
 	end
 end
 

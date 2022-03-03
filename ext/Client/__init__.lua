@@ -52,6 +52,7 @@ function Client:RegisterEvents()
 	Events:Subscribe('Extension:Loaded', self, self.OnExtensionLoaded)
     Events:Subscribe('Client:UpdateInput', self, self.OnClientUpdateInput)
     Events:Subscribe('WebUI:UpdateValues', self, self.OnWebUIUpdateValues)
+    Events:Subscribe('WebUI:UpdateMaplist', self, self.OnWebUIUpdateMaplist)
 	Events:Subscribe('WebUI:PullRequest', self, self.OnPullRequest)
     Events:Subscribe('InGameRCON:RegisterCustomMap', self, self.OnMapRegister)
 end
@@ -75,6 +76,10 @@ end
 
 function Client:OnWebUIUpdateValues(p_JSONData)
 	NetEvents:Send('IngameRCON:UpdateValues', p_JSONData)
+end
+
+function Client:OnWebUIUpdateMaplist(p_JSONData)
+    NetEvents:Send('IngameRCON:UpdateMaplist')
 end
 
 function Client:OnPullRequest()
