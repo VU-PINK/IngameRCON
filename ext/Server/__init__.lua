@@ -544,19 +544,37 @@ function Server:OnPlayerAuthenticated(p_Player)
 	end
 end
 
-function Server:GetCurrentSettings()
-    for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
+function Server:GetCurrentSettings(p_CommandGroup, p_Command)
+	for l_CommandGroup, l_CommandTable in pairs(self.m_ValidCommands) do
 		local s_ReceivedData
 		for l_Command, l_CommandInfo in pairs(l_CommandTable) do
-			local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
-			if l_CommandInfo.canGet then
-				s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
-				l_CommandInfo['currentData'] = s_ReceivedData
-				m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
+			if p_CommandGroup ~= nil and p_Command ~= nil then
+				if l_CommandGroup == p_CommandGroup and l_Command == p_Command then
+					local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
-				for _, l_Value in pairs(s_ReceivedData) do
-					m_Logger:Write('Values: ' .. l_Value)
+					if l_CommandInfo.canGet then
+						s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
+						l_CommandInfo['currentData'] = s_ReceivedData
+						m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
+
+						for _, l_Value in pairs(s_ReceivedData) do
+							m_Logger:Write('Values: ' .. l_Value)
+						end
+					end
+				end
+				return
+			else
+				local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
+
+				if l_CommandInfo.canGet then
+					s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
+					l_CommandInfo['currentData'] = s_ReceivedData
+					m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
+
+					for _, l_Value in pairs(s_ReceivedData) do
+						m_Logger:Write('Values: ' .. l_Value)
+					end
 				end
 			end
 		end
