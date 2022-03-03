@@ -79,7 +79,7 @@ function Client:OnWebUIUpdateValues(p_JSONData)
 end
 
 function Client:OnWebUIUpdateMaplist(p_JSONData)
-    NetEvents:Send('IngameRCON:UpdateMaplist')
+    NetEvents:Send('IngameRCON:UpdateMaplist', p_JSONData)
 end
 
 function Client:OnPullRequest()
