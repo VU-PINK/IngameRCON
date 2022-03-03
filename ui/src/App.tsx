@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { Button, Col, CustomProvider, Drawer, Form, InputNumber, List, Nav, Row, SelectPicker } from "rsuite";
+import { Button, Col, CustomProvider, Drawer, Form, InputNumber, List, Nav, Panel, Row, SelectPicker } from "rsuite";
 
 import GeneralTab from "./tabs/GeneralTab";
 import VuTab from "./tabs/VuTab";
 import { GamemodeNames, LevelNames, sendToLua, ToggleExtended } from "./helpers";
+import MapList from "./components/MapList";
 
 import "./App.css";
 import "./App.scss";
@@ -19,19 +20,10 @@ const App: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string|undefined>(undefined);
     const [formValue, setFormValue] = useState<any>(initFormValue);
     const [tabs, setTabs] = useState<any>([]);
-
     const [maps, setMaps] = useState<any[]>([]);
-    const [gamemodes, setGamemodes] = useState<any[]>([]);
-    const [selectedMap, setSelectedMap] = useState<any>(null);
-    const [selectedGamemode, setSelectedGamemode] = useState<any>(null);
-    const [rounds, setRounds] = useState<number>(1);
 
-    const [data, setData] = useState([
-        { text: 'Roses are red' },
-        { text: 'Violets are blue' },
-        { text: 'Sugar is sweet' },
-        { text: 'And so are you' }
-    ]);
+    const [vuMapList, setVuMapList] = useState([]);
+    const [vuMapListHasChanged, setVuMapListHasChanged] = useState<number>(0);
 
     /*
     * Debug
@@ -45,11 +37,6 @@ const App: React.FC = () => {
 
     const getInputType = (tab: any, item: any) => {
         switch (item.inputType) {
-            case "maplist":
-                return <>
-                    {console.log(formValue)}
-                    {JSON.stringify(item)}
-                </>;
             case "button":
                 return (
                     <Button 
@@ -122,23 +109,35 @@ const App: React.FC = () => {
     window.OnSyncValues = (values: string) => {
         let _tabs: any = [];
         let _allItems: any = {};
-        console.log(values);
+        let _tempCurrentMaps: any = [];
         Object.entries(values).forEach((value: any, _: any) => {
             let _items: any = [];
             Object.entries(value[1]).forEach((item: any, _: any) => {
-                _items.push({
-                    name: item[0],
-                    description: item[1].description??"",
-                    canGet: item[1].canGet,
-                    inputType: item[1].inputType??"none",
-                });
-
-                if (item[1].canGet === true) {
-                    let val:any = item[1].currentData[1];
-                    if (item[1].inputType === "switch") {
-                        val = item[1].currentData[1] === "true" ? true : false;
+                if (value[0] === "mapList" && item[0] === "list") {
+                    let _mapTemp = item[1].currentData.splice(3);
+                    for (let index = 0; index < _mapTemp.length; index++) {
+                        _tempCurrentMaps.push({
+                            map: _mapTemp[index],
+                            gameMode: _mapTemp[index + 1],
+                            rounds: _mapTemp[index + 2],
+                        });
+                        index = index + 2;
                     }
-                    _allItems[value[0] + "." + item[0]] = val;
+                } else {
+                    _items.push({
+                        name: item[0],
+                        description: item[1].description??"",
+                        canGet: item[1].canGet,
+                        inputType: item[1].inputType??"none",
+                    });
+    
+                    if (item[1].canGet === true) {
+                        let val:any = item[1].currentData[1];
+                        if (item[1].inputType === "switch") {
+                            val = item[1].currentData[1] === "true" ? true : false;
+                        }
+                        _allItems[value[0] + "." + item[0]] = val;
+                    }
                 }
             });
             _tabs.push({
@@ -151,20 +150,7 @@ const App: React.FC = () => {
             setActiveTab(Object.entries(values)[0][0]);
         }
         setFormValue(_allItems);
-    }
-
-    window.OnSyncMaps = (values: any) => {
-        let tempMaps: any = [];
-        Object.entries(values).forEach((element: any) => {
-            console.log(element);
-            tempMaps.push({
-                label: LevelNames[element[0]] + " (" + element[0] + ")",
-                value: element[0],
-                gameModes: element[1][1],
-                type: element[1][0],
-            });
-        });
-        setMaps(tempMaps);
+        setVuMapList(_tempCurrentMaps);
     }
 
     window.OnSetMenu = (open: boolean) => {
@@ -175,12 +161,24 @@ const App: React.FC = () => {
         setOpen(prevState => !prevState);
     }
 
+    window.OnSyncMaps = (values: any) => {
+        let tempMaps: any = [];
+        Object.entries(values).forEach((element: any) => {
+            tempMaps.push({
+                label: LevelNames[element[0]] + " (" + element[0] + ")",
+                value: element[0],
+                gameModes: element[1][1],
+                type: element[1][0],
+            });
+        });
+        setMaps(tempMaps);
+    }
+
     useEffect(() => {
         if (open) {
             if (navigator.userAgent.includes("VeniceUnleashed")) {
                 WebUI.Call("EnableKeyboard");
                 WebUI.Call("EnableMouse");
-
             }
             sendToLua("WebUI:PullRequest");
         } else {
@@ -190,37 +188,21 @@ const App: React.FC = () => {
             }
         }
     }, [open]);
-
-    useEffect(() => {
-        if (selectedMap !== null) {
-            setSelectedGamemode(null);
-            const foundMap = maps.find((map: any) => map.value === selectedMap);
-            if (foundMap) {
-                let tempGamemodes: any = [];
-                foundMap.gameModes.forEach((element: any) => {
-                    tempGamemodes.push({
-                        label: GamemodeNames[element] + " (" + element + ")",
-                        value: element,
-                    });
-                });
-                setGamemodes(tempGamemodes);
-            }
-        } else {
-            setSelectedGamemode(null);
-            setGamemodes([]);
-        }
-    }, [selectedMap]);
-
-    const handleSortEnd = ({ oldIndex, newIndex }: any) => {
-        setData(prvData => {
-            const moveData = prvData.splice(oldIndex, 1);
-            const newData = [...prvData];
-            newData.splice(newIndex, 0, moveData[0]);
-            return newData;
-        });
-    };
-
     
+    useEffect(() => {
+        if (vuMapList.length > 0) {
+            let _sendData: any = [];
+            vuMapList.forEach((element: any) => {
+                _sendData.push([
+                    element.map,
+                    element.gameMode,
+                    element.rounds,
+                ]);
+            });
+            sendToLua("WebUI:UpdateMaplist", JSON.stringify(_sendData));
+        }
+    }, [vuMapListHasChanged]);
+
     return (
         <CustomProvider theme="dark">
             {debugMode &&
@@ -280,67 +262,25 @@ const App: React.FC = () => {
                         formValue={formValue}
                         onChange={formValue => setFormValue(formValue)}
                     >
-                        <Row>
-                            <Col md={8}>
-                                <SelectPicker
-                                    data={maps}
-                                    block
-                                    placeholder="Map"
-                                    onChange={(value: string) => setSelectedMap(value)}
-                                    value={selectedMap}
-                                    groupBy="type"
-                                />
-                            </Col>
-                            <Col md={8}>
-                                <SelectPicker
-                                    data={gamemodes}
-                                    block
-                                    placeholder="Gamemode"
-                                    disabled={selectedMap === null}
-                                    onChange={(value: string) => setSelectedGamemode(value)}
-                                    value={selectedGamemode}
-                                />
-                            </Col>
-                            <Col md={4}>
-                                <InputNumber
-                                    min={1}
-                                    max={100}
-                                    defaultValue={1}
-                                    value={rounds}
-                                    onChange={(value: any) => setRounds(parseInt(value))}
-                                    disabled={selectedGamemode === null}
-                                />
-                            </Col>
-                            <Col md={4}>
-                                <Button
-                                    block
-                                    appearance="primary"
-                                    disabled={selectedMap === null || selectedGamemode === null}
-                                    onClick={() => {
-                                        setSelectedMap(null);
-                                        setSelectedGamemode(null);
-                                    }}
-                                >
-                                    Add
-                                </Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={24}>
-                                <List sortable onSort={handleSortEnd}>
-                                    {data.map(({ text }, index) => (
-                                        <List.Item key={index} index={index}>
-                                            {text}
-                                        </List.Item>
-                                    ))}
-                                </List>
-                            </Col>
-                        </Row>
-                        
                         {getCurrentTab() !== undefined &&
                             <>
+                                {activeTab === "mapList" &&
+                                    <MapList
+                                        maps={maps}
+                                        currentMapList={vuMapList}
+                                        setCurrentMapList={setVuMapList}
+                                        vuMapListHasChanged={vuMapListHasChanged}
+                                        setVuMapListHasChanged={() => {
+                                            setVuMapListHasChanged((prevState: number) => {
+                                                return ++prevState;
+                                            });
+                                        }}
+                                    />
+                                }
+
                                 {getCurrentTab()
                                 .items
+                                .filter((item: any) => item.inputType !== "none")
                                 .sort((a: any, b: any) => String(a.inputType)
                                 .localeCompare(b.inputType))
                                 .map((item: any, index: number) => 

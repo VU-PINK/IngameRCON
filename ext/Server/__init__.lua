@@ -90,14 +90,14 @@ function Server:RegisterVars()
 				description = '<map, gamemode, rounds, offset>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'alphanumeric'
+				inputType = 'hidden'
 			},
             ['remove'] = {
 				title = '',
 				description = '<index>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'integer'
+				inputType = 'none'
 			},
             ['clear'] = {
 				title = '',
@@ -111,14 +111,14 @@ function Server:RegisterVars()
 				description = '',
 				currentData = nil,
 				canGet = true,
-				inputType = 'maplist'
+				inputType = 'none'
 			},
             ['nextMap'] = {
 				title = '',
 				description = '<index>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'integer'
+				inputType = 'none'
 			},
             ['getMapIndices'] = {
 				title = '',
@@ -638,18 +638,27 @@ function Server:OnAdminClear()
 	end
 end
 
-function Server:OnUpdateMaplist(p_JSONData)
+function Server:OnUpdateMaplist(p_Player, p_JSONData)
 	local s_MapListTable = json.decode(p_JSONData)
+
+	if s_MapListTable == nil then
+		return
+	end
+
 	-- clear old maplist
 	RCON:SendCommand("mapList.clear")
 
 	for l_Index, l_Arguments in ipairs(s_MapListTable) do
 		local s_Name = l_Arguments[1]
 		local s_Gamemode = l_Arguments[2]
-		local s_Rounds = l_Arguments[3]
-		RCON:SendCommand("mapList.add", {s_Name, s_Gamemode, s_Rounds})
-		m_Logger:Write("Maplist Index: " .. l_Index .. " | Gamemode: " .. s_Gamemode .. " | Rounds: " .. s_Rounds)
+		local s_Rounds = math.floor(l_Arguments[3])
+		RCON:SendCommand("mapList.add", {s_Name, s_Gamemode, tostring(s_Rounds)})
+		m_Logger:Write("Maplist Index: " .. l_Index .. " | Map: " .. s_Name .. " | Gamemode: " .. s_Gamemode .. " | Rounds: " .. s_Rounds)
 	end
+
+	RCON:SendCommand("mapList.save")
+
+	self:GetCurrentSettings()
 end
 
 return Server()
