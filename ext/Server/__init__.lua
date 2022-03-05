@@ -155,6 +155,20 @@ function Server:RegisterVars()
 				canGet = false,
 				inputType = 'button'
 			},
+            ['setNextMapIndex'] = {
+				title = '',
+				description = '',
+				currentData = nil,
+				canGet = false,
+				inputType = 'hidden'
+			},
+			['runNextRound'] = {
+				title = '',
+				description = '',
+				currentData = nil,
+				canGet = false,
+				inputType = 'hidden'
+			},
 		},
         ['vars'] = {
             ['serverName'] = {
@@ -591,9 +605,14 @@ function Server:OnValuesUpdated(p_Player, p_JSONData)
 				for l_Command, l_CommandInfo in pairs(l_CommandTable) do
 					local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
-					if l_Cmd == s_ConstructedString and l_CommandInfo['currentData'] ~= l_Args then
-						--- [1] Command (e.g. mapList.add) [2] Arguments {"MP_001", "RushLarge0", "1"})
-						RCON:SendCommand(l_Cmd, { tostring(l_Args) })
+					if l_Cmd == s_ConstructedString then
+						if (tostring(l_Args) == "") then
+							--- [1] Command (e.g. mapList.add)
+							RCON:SendCommand(l_Cmd)
+						else
+							--- [1] Command (e.g. mapList.add) [2] Arguments {"MP_001", "RushLarge0", "1"})
+							RCON:SendCommand(l_Cmd, { tostring(l_Args) })
+						end
 					end
 				end
 			end

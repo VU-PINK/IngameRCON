@@ -6,4 +6,26 @@
 
 .rs-list-item {
     padding: 10px 25px;
+
+    .rs-flex-box-grid {        
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    h5 {
+        font-size: 22px;
+        margin: 0;
+    }
+
+    h4 {
+        font-size: 16px;
+        margin: 0;
+    }
+
+    p {
+        color: var(--rs-blue-700);
+        font-weight: 600;
+        font-size: 13px;
+        margin: 0;
+    }
 }

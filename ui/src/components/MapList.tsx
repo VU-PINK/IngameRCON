@@ -4,26 +4,30 @@ import {
     Button,
     Col,
     FlexboxGrid,
-    Form,
     IconButton,
-    Input,
     InputNumber,
     List,
     Panel,
     Row,
     SelectPicker,
-    Toggle
+    Notification,
+    toaster
 } from "rsuite";
-import { GamemodeNames, LevelNames, sendToLua } from "../helpers";
 import CloseIcon from '@rsuite/icons/Close';
+import PlayOutlineIcon from '@rsuite/icons/PlayOutline';
+
+import {
+    GamemodeNames,
+    LevelNames,
+    sendToLua
+} from "../helpers";
+import {
+    ModelGamemode,
+    ModelMapListItem,
+    ModelMapWithGamemodesItem
+} from "../models/Models";
 
 import "./MapList.scss";
-
-const styleEnd = {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-};
 
 const styleStart = {
     display: 'flex',
@@ -32,50 +36,63 @@ const styleStart = {
     flexFlow: 'column',
 };
 
+const styleEnd = {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+};
+
+const mapIsAlreadyOnListMessage = (
+    <Notification type="error" header="Error" closable>
+        Map and gamemode is already on the list!
+    </Notification>
+);
+
 interface Props {
-    maps: any;
-    currentMapList: any;
-    setCurrentMapList: any;
-    vuMapListHasChanged: any;
-    setVuMapListHasChanged: any;
+    availableMapsAndGamemodes: ModelMapWithGamemodesItem[];
+    currentMapList: ModelMapListItem[];
+    setCurrentMapList: React.Dispatch<React.SetStateAction<ModelMapListItem[]>>;
+    mapListHasChanged: number;
+    setMapListHasChanged: () => void;
+    closeDrawer: () => void;
 }
 
 const MapList: React.FC<Props> = ({
-    maps,
+    availableMapsAndGamemodes,
     currentMapList,
     setCurrentMapList,
-    vuMapListHasChanged,
-    setVuMapListHasChanged,
+    mapListHasChanged,
+    setMapListHasChanged,
+    closeDrawer,
 }) => {
-    const [gamemodes, setGamemodes] = useState<any[]>([]);
-    const [selectedMap, setSelectedMap] = useState<any>(null);
-    const [selectedGamemode, setSelectedGamemode] = useState<any>(null);
+    const [gamemodes, setGamemodes] = useState<ModelGamemode[]>([]);
+    const [selectedMap, setSelectedMap] = useState<string|null>(null);
+    const [selectedGamemode, setSelectedGamemode] = useState<string|null>(null);
     const [rounds, setRounds] = useState<number>(1);
 
     const handleSortEnd = ({ oldIndex, newIndex }: any) => {
-        console.log("handleSortEnd");
-        setCurrentMapList((prevData: any) => {
+        setCurrentMapList((prevData: ModelMapListItem[]) => {
             const moveData = prevData.splice(oldIndex, 1);
             const newData = [ ...prevData ];
             newData.splice(newIndex, 0, moveData[0]);
             return newData;
         });
-        setVuMapListHasChanged();
+        setMapListHasChanged();
     };
 
     useEffect(() => {
         if (selectedMap !== null) {
             setSelectedGamemode(null);
-            const foundMap = maps.find((map: any) => map.value === selectedMap);
+            const foundMap = availableMapsAndGamemodes.find((map: any) => map.value === selectedMap);
             if (foundMap) {
-                let tempGamemodes: any = [];
+                let _tempGamemodes: ModelGamemode[] = [];
                 foundMap.gameModes.forEach((element: any) => {
-                    tempGamemodes.push({
+                    _tempGamemodes.push({
                         label: GamemodeNames[element] + " (" + element + ")",
                         value: element,
                     });
                 });
-                setGamemodes(tempGamemodes);
+                setGamemodes(_tempGamemodes);
             }
         } else {
             setSelectedGamemode(null);
@@ -88,7 +105,7 @@ const MapList: React.FC<Props> = ({
             <Row>
                 <Col md={8}>
                     <SelectPicker
-                        data={maps}
+                        data={availableMapsAndGamemodes}
                         block
                         placeholder="Map"
                         onChange={(value: string) => setSelectedMap(value)}
@@ -122,18 +139,21 @@ const MapList: React.FC<Props> = ({
                         appearance="primary"
                         disabled={selectedMap === null || selectedGamemode === null}
                         onClick={() => {
-                            setSelectedMap(null);
-                            setSelectedGamemode(null);
-                            // TODO: Check if the map and the gamemode is there on the list already
-                            setCurrentMapList((prevData: any) => ([
-                                ...prevData,
-                                {
-                                    map: selectedMap,
-                                    gameMode: selectedGamemode,
-                                    rounds: rounds,
-                                }
-                            ]));
-                            setVuMapListHasChanged();
+                            if (currentMapList.some(e => e.map === selectedMap && e.gameMode === selectedGamemode)) {
+                                toaster.push(mapIsAlreadyOnListMessage, { placement: "topEnd" })
+                            } else {
+                                setSelectedMap(null);
+                                setSelectedGamemode(null);
+                                setCurrentMapList((prevData: ModelMapListItem[]) => ([
+                                    ...prevData,
+                                    {
+                                        map: selectedMap,
+                                        gameMode: selectedGamemode,
+                                        rounds: rounds.toString(),
+                                    }
+                                ]));
+                                setMapListHasChanged();
+                            }
                         }}
                     >
                         Add
@@ -144,17 +164,52 @@ const MapList: React.FC<Props> = ({
                 <Col md={24}>
                     <Panel bordered bodyFill>
                         <List bordered sortable onSort={handleSortEnd}>
-                            {currentMapList.map(({ map, gameMode, rounds }: any, index: number) => (
+                            {currentMapList.map(({ map, gameMode, rounds }: ModelMapListItem, index: number) => (
                                 <List.Item key={index} index={index}>
                                     <FlexboxGrid>
-                                        <FlexboxGrid.Item colspan={12} style={styleStart}>
+                                        <FlexboxGrid.Item colspan={2} style={styleStart}>
+                                            <h5>{rounds}</h5>
+                                        </FlexboxGrid.Item>
+                                        <FlexboxGrid.Item colspan={14} style={styleStart}>
                                             <h4>{LevelNames[map]}</h4>
                                             <p>{GamemodeNames[gameMode]}</p>
-                                            {rounds}
                                         </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item colspan={12} style={styleEnd}>
-                                            <IconButton icon={<CloseIcon/>} size="xs" color="blue" appearance="ghost" />
-                                            <IconButton icon={<CloseIcon/>} size="xs" color="red" appearance="ghost" />
+                                        <FlexboxGrid.Item colspan={8} style={styleEnd}>
+                                            <IconButton
+                                                icon={<PlayOutlineIcon/>}
+                                                size="xs"
+                                                color="blue"
+                                                appearance="ghost"
+                                                style={{ marginRight: 8 }}
+                                                onClick={() => {
+                                                    sendToLua("WebUI:UpdateValues", JSON.stringify([
+                                                        [
+                                                            "mapList.setNextMapIndex",
+                                                            index.toString()
+                                                        ],
+                                                        [
+                                                            "mapList.runNextRound",
+                                                            ""
+                                                        ],
+                                                    ]));
+                                                    closeDrawer();
+                                                }}
+                                            />
+                                            <IconButton
+                                                icon={<CloseIcon/>}
+                                                size="xs"
+                                                color="red"
+                                                appearance="ghost"
+                                                onClick={() => {
+                                                    setCurrentMapList((prevState: ModelMapListItem[]) => (
+                                                        [
+                                                            ...prevState.slice(0, index),
+                                                            ...prevState.slice(index + 1)
+                                                        ]
+                                                    ));
+                                                    setMapListHasChanged();
+                                                }}
+                                            />
                                         </FlexboxGrid.Item>
                                     </FlexboxGrid>
                                 </List.Item>

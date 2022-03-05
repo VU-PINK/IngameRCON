@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from "react";
 
-import { Button, Col, CustomProvider, Drawer, Form, InputNumber, List, Nav, Panel, Row, SelectPicker } from "rsuite";
+import {
+    Button,
+    CustomProvider,
+    Drawer,
+    Form,
+    InputNumber,
+    Nav,
+} from "rsuite";
 
-import GeneralTab from "./tabs/GeneralTab";
-import VuTab from "./tabs/VuTab";
-import { GamemodeNames, LevelNames, sendToLua, ToggleExtended } from "./helpers";
+import {
+    LevelNames,
+    sendToLua,
+    ToggleExtended
+} from "./helpers";
 import MapList from "./components/MapList";
+import {
+    ModelItem,
+    ModelMapListItem,
+    ModelTab,
+    ModelMapWithGamemodesItem
+} from "./models/Models";
 
 import "./App.css";
 import "./App.scss";
 
-const initFormValue = {
-    "vu.ColorCorrectionEnabled": true,
-    "vu.ServerBanner": "https://i.imgur.com/jdUmPVA.jpg",
-};
-
 const App: React.FC = () => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useState<string|undefined>(undefined);
-    const [formValue, setFormValue] = useState<any>(initFormValue);
-    const [tabs, setTabs] = useState<any>([]);
-    const [maps, setMaps] = useState<any[]>([]);
-
-    const [vuMapList, setVuMapList] = useState([]);
-    const [vuMapListHasChanged, setVuMapListHasChanged] = useState<number>(0);
+    const [formValue, setFormValue] = useState<Object>({});
+    const [tabs, setTabs] = useState<ModelTab[]>([]);
+    const [availableMapsAndGamemodes, setAvailableMapsAndGamemodes] = useState<ModelMapWithGamemodesItem[]>([]);
+    const [currentMapList, setCurrentMapList] = useState<ModelMapListItem[]>([]);
+    const [mapListHasChanged, setMapListHasChanged] = useState<number>(0);
 
     /*
     * Debug
@@ -95,7 +104,7 @@ const App: React.FC = () => {
     }
 
     const handleSave = () => {
-        let temp: any = [];
+        let temp: Array<Array<string>> = [];
         for (const [key, value] of Object.entries(formValue)) {
             temp.push([
                 key,
@@ -103,13 +112,16 @@ const App: React.FC = () => {
             ]);
         }
         sendToLua("WebUI:UpdateValues", JSON.stringify(temp));
+
+        // If we want to close the RCON menu when you save then uncomment this line.
         // setOpen(false);
     }
 
     window.OnSyncValues = (values: string) => {
-        let _tabs: any = [];
+        let _tabs: ModelTab[] = [];
         let _allItems: any = {};
-        let _tempCurrentMaps: any = [];
+        let _tempCurrentMaps: ModelMapListItem[] = [];
+
         Object.entries(values).forEach((value: any, _: any) => {
             let _items: any = [];
             Object.entries(value[1]).forEach((item: any, _: any) => {
@@ -145,12 +157,14 @@ const App: React.FC = () => {
                 items: _items,
             });
         });
+
         setTabs(_tabs);
         if (activeTab === undefined) {
             setActiveTab(Object.entries(values)[0][0]);
         }
+
         setFormValue(_allItems);
-        setVuMapList(_tempCurrentMaps);
+        setCurrentMapList(_tempCurrentMaps);
     }
 
     window.OnSetMenu = (open: boolean) => {
@@ -162,16 +176,16 @@ const App: React.FC = () => {
     }
 
     window.OnSyncMaps = (values: any) => {
-        let tempMaps: any = [];
+        let _tempMaps: ModelMapWithGamemodesItem[] = [];
         Object.entries(values).forEach((element: any) => {
-            tempMaps.push({
+            _tempMaps.push({
                 label: LevelNames[element[0]] + " (" + element[0] + ")",
                 value: element[0],
                 gameModes: element[1][1],
                 type: element[1][0],
             });
         });
-        setMaps(tempMaps);
+        setAvailableMapsAndGamemodes(_tempMaps);
     }
 
     useEffect(() => {
@@ -190,9 +204,9 @@ const App: React.FC = () => {
     }, [open]);
     
     useEffect(() => {
-        if (vuMapList.length > 0) {
+        if (currentMapList.length > 0) {
             let _sendData: any = [];
-            vuMapList.forEach((element: any) => {
+            currentMapList.forEach((element: any) => {
                 _sendData.push([
                     element.map,
                     element.gameMode,
@@ -201,7 +215,7 @@ const App: React.FC = () => {
             });
             sendToLua("WebUI:UpdateMaplist", JSON.stringify(_sendData));
         }
-    }, [vuMapListHasChanged]);
+    }, [mapListHasChanged]);
 
     return (
         <CustomProvider theme="dark">
@@ -221,7 +235,7 @@ const App: React.FC = () => {
             }
             <div id="debug">
                 <Button onClick={() => setOpen(true)}>Open</Button>
-                <Button onClick={() => setFormValue(initFormValue)}>Reset</Button>
+                <Button onClick={() => setFormValue({})}>Reset</Button>
                 {/*JSON.stringify(formValue)*/}
             </div>
             
@@ -266,14 +280,17 @@ const App: React.FC = () => {
                             <>
                                 {activeTab === "mapList" &&
                                     <MapList
-                                        maps={maps}
-                                        currentMapList={vuMapList}
-                                        setCurrentMapList={setVuMapList}
-                                        vuMapListHasChanged={vuMapListHasChanged}
-                                        setVuMapListHasChanged={() => {
-                                            setVuMapListHasChanged((prevState: number) => {
+                                        availableMapsAndGamemodes={availableMapsAndGamemodes}
+                                        currentMapList={currentMapList}
+                                        setCurrentMapList={setCurrentMapList}
+                                        mapListHasChanged={mapListHasChanged}
+                                        setMapListHasChanged={() => {
+                                            setMapListHasChanged((prevState: number) => {
                                                 return ++prevState;
                                             });
+                                        }}
+                                        closeDrawer={() => {
+                                            setOpen(false);
                                         }}
                                     />
                                 }
