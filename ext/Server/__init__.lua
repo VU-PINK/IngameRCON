@@ -541,6 +541,7 @@ function Server:RegisterEvents()
     NetEvents:Subscribe('IngameRCON:UpdateValues', self, self.OnValuesUpdated)
     NetEvents:Subscribe('IngameRCON:PullRequest', self, self.OnValuePullRequest)
 	NetEvents:Subscribe('IngameRCON:UpdateMaplist', self, self.OnUpdateMaplist)
+	NetEvents:Subscribe('IngameRCON:UpdateBanlist', self, self.OnUpdateBanlist)
     -- Events
     Events:Subscribe('Level:Loaded', self, self.OnLevelLoaded)
 	Events:Subscribe('GameAdmin:Player', self, self.OnAdminBroadcast)
@@ -554,7 +555,7 @@ end
 
 function Server:OnPlayerAuthenticated(p_Player)
 	if self.Admins[p_Player.name] or DEBUG then
-		NetEvents:SendTo('IngameRCON:IsAdmin', p_Player, true)
+		NetEvents:SendTo('IngameRCON:IsAdmin', p_Player, true) 
 	end
 end
 
@@ -678,6 +679,10 @@ function Server:OnUpdateMaplist(p_Player, p_JSONData)
 	RCON:SendCommand("mapList.save")
 
 	self:GetCurrentSettings()
+end
+
+function Server:OnUpdateBanlist(p_Player, p_JSONData)
+
 end
 
 return Server()

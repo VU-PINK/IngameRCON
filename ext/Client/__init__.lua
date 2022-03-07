@@ -41,6 +41,8 @@ function Client:RegisterVars()
         ['XP5_004'] = {'End Game', {'AirSuperiority0', 'CaptureTheFlag0', 'ConquestLarge0', 'ConquestSmall0', 'RushLarge0', 'SquadDeathMatch0', 'SquadRush0', 'TeamDeathMatch0', 'TeamDeathMatchC0'}},
     }
 
+    self.m_OnlinePlayers = {}
+
     self.IsAdmin = true
 end
 
@@ -53,6 +55,7 @@ function Client:RegisterEvents()
     Events:Subscribe('Client:UpdateInput', self, self.OnClientUpdateInput)
     Events:Subscribe('WebUI:UpdateValues', self, self.OnWebUIUpdateValues)
     Events:Subscribe('WebUI:UpdateMaplist', self, self.OnWebUIUpdateMaplist)
+    Events:Subscribe('WebUI:UpdateBanlist', self, self.OnWebUIUpdateBanlist)
 	Events:Subscribe('WebUI:PullRequest', self, self.OnPullRequest)
     Events:Subscribe('InGameRCON:RegisterCustomMap', self, self.OnMapRegister)
     Events:Subscribe('InGameRCON:AddCustomMod', self, self.OnModeRegister)
@@ -69,8 +72,18 @@ end
 function Client:OnClientUpdateInput()
     if InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
         if self.IsAdmin or DEBUG then
+            -- get current players for banlist
+            local s_PlayerTable = PlayerManager:GetPlayers()
+            for _, l_Player in ipairs(s_PlayerTable) do
+                table.insert(self.m_OnlinePlayers, l_Player.name)
+            end
+
             WebUI:ExecuteJS(string.format("OnSyncMaps(%s);", json.encode(self.m_AvailableMaps)))
+            WebUI:ExecuteJS(string.format("OnSyncPlayers(%s);", json.encode(self.m_OnlinePlayers)))
             WebUI:ExecuteJS("OnToggleMenu();")
+            -- reset player tables
+            s_PlayerTable = {}
+            self.m_OnlinePlayers = {}
         end
     end
 end
@@ -81,6 +94,10 @@ end
 
 function Client:OnWebUIUpdateMaplist(p_JSONData)
     NetEvents:Send('IngameRCON:UpdateMaplist', p_JSONData)
+end
+
+function Client:OnWebUIUpdateBanlist(p_JSONData)
+    NetEvents:Send('IngameRCON:UpdateBanlist', p_JSONData)
 end
 
 function Client:OnPullRequest()
