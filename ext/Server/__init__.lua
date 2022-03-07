@@ -60,28 +60,28 @@ function Server:RegisterVars()
 				description = '<id-type, id, timeout, reason>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'alphanumeric'
+				inputType = 'hidden'
 			},
             ['remove'] = {
 				title = '',
 				description = '<id-type, id>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'alphanumeric'
+				inputType = 'hidden'
 			},
             ['clear'] = {
 				title = '',
 				description = 'clears the banlist',
 				currentData = nil,
 				canGet = false,
-				inputType = 'button'
+				inputType = 'hidden'
 			},
             ['list'] = {
 				title = '',
 				description = 'lists all banned players',
 				currentData = nil,
 				canGet = true,
-				inputType = 'button'
+				inputType = 'hidden'
 			}
         },
         ['mapList'] = {
@@ -97,7 +97,7 @@ function Server:RegisterVars()
 				description = '<index>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'none'
+				inputType = 'hidden'
 			},
             ['clear'] = {
 				title = '',
@@ -111,28 +111,28 @@ function Server:RegisterVars()
 				description = '',
 				currentData = nil,
 				canGet = true,
-				inputType = 'none'
+				inputType = 'hidden'
 			},
             ['nextMap'] = {
 				title = '',
 				description = '<index>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'none'
+				inputType = 'hidden'
 			},
             ['getMapIndices'] = {
 				title = '',
 				description = ' - Get indices for current & next map',
 				currentData = nil,
 				canGet = true,
-				inputType = 'button'
+				inputType = 'hidden'
 			},
             ['getRounds'] = {
 				title = '',
 				description = ' - Get current round and number of rounds',
 				currentData = nil,
 				canGet = true,
-				inputType = 'button'
+				inputType = 'hidden'
 			},
             ['endRound'] = {
 				title = '',
