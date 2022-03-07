@@ -75,7 +75,7 @@ function Client:OnClientUpdateInput()
             -- get current players for banlist
             local s_PlayerTable = PlayerManager:GetPlayers()
             for _, l_Player in ipairs(s_PlayerTable) do
-                table.insert(self.m_OnlinePlayers, l_Player.name)
+                table.insert(self.m_OnlinePlayers, {l_Player.onlineId, l_Player.name})
             end
 
             WebUI:ExecuteJS(string.format("OnSyncMaps(%s);", json.encode(self.m_AvailableMaps)))
