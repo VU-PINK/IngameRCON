@@ -53,6 +53,13 @@ function Server:RegisterVars()
 				canGet = false,
 				inputType = 'alphanumeric'
 			},
+			['listPlayers'] = {
+				title = '',
+				description = '<players: player subset>',
+				currentData = nil,
+				canGet = true,
+				inputType = 'hidden'
+			},
 		},
 		['banList'] = {
 			['add'] = {

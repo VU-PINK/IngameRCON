@@ -162,16 +162,12 @@ const BanList: React.FC<Props> = ({
                 <Col md={24}>
                     <Panel bordered bodyFill>
                         <List bordered>
-                            {currentBanList.map(({ id }: ModelBanItem, index: number) => (
+                            {currentBanList.map(({ id, type, timeout, reason }: ModelBanItem, index: number) => (
                                 <List.Item key={index} index={index}>
                                     <FlexboxGrid>
-                                        <FlexboxGrid.Item colspan={2} style={styleStart}>
-                                            <h5>{/*rounds*/}</h5>
-                                            <span>ROUND(S)</span>
-                                        </FlexboxGrid.Item>
-                                        <FlexboxGrid.Item colspan={14} style={styleMiddle}>
+                                        <FlexboxGrid.Item colspan={16} style={styleMiddle}>
                                             <h4>{id}</h4>
-                                            <p>{id}</p>
+                                            <p>{reason??""}</p>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item colspan={8} style={styleEnd}>
                                             <IconButton

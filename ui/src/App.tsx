@@ -151,6 +151,8 @@ const App: React.FC = () => {
         let _tabs: ModelTab[] = [];
         let _allItems: any = {};
         let _tempCurrentMaps: ModelMapListItem[] = [];
+        let _tempCurrentBans: ModelBanItem[] = [];
+
 
         Object.entries(values).forEach((value: any, _: any) => {
             let _items: any = [];
@@ -164,6 +166,17 @@ const App: React.FC = () => {
                             rounds: _mapTemp[index + 2],
                         });
                         index = index + 2;
+                    }
+                } else if (value[0] === "banList" && item[0] === "list") {
+                    let _banTemp = item[1].currentData.splice(1);
+                    for (let index = 0; index < _banTemp.length; index++) {
+                        _tempCurrentBans.push({
+                            type: _banTemp[index],
+                            id: _banTemp[index + 1],
+                            timeout: _banTemp[index + 2],
+                            reason: _banTemp[index + 5] ?? "",
+                        });
+                        index = index + 5;
                     }
                 } else {
                     _items.push({
@@ -195,17 +208,19 @@ const App: React.FC = () => {
 
         setFormValue(_allItems);
         setCurrentMapList(_tempCurrentMaps);
+        setCurrentBanList(_tempCurrentBans);
     }
 
     window.OnSyncPlayers = (values: any) => {
-        let _tempPlayers: ModelPlayerItem[] = [];
+        /*let _tempPlayers: ModelPlayerItem[] = [];
         Object.values(values).forEach((element: any) => {
             _tempPlayers.push({
                 label: element,
                 value: element,
             });
         });
-        setAvailablePlayers(_tempPlayers);
+        setAvailablePlayers(_tempPlayers);*/
+        console.log(values);
     }
 
     window.OnSetMenu = (open: boolean) => {
