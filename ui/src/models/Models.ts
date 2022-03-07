@@ -23,6 +23,18 @@ export interface ModelMapListItem {
     rounds: string;
 };
 
+export interface ModelBanItem {
+    type: string;
+    id: string;
+    timeout: string;
+    reason: string;
+};
+
+export interface ModelPlayerItem {
+    label: string;
+    value: string;
+};
+
 export interface ModelTab {
     name: string,
     items: ModelItem[],

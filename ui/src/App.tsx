@@ -5,9 +5,11 @@ import {
     CustomProvider,
     Drawer,
     Form,
+    IconButton,
     InputNumber,
     Nav,
 } from "rsuite";
+import CheckIcon from '@rsuite/icons/Check';
 
 import {
     LevelNames,
@@ -16,11 +18,13 @@ import {
 } from "./helpers";
 import MapList from "./components/MapList";
 import {
-    ModelItem,
     ModelMapListItem,
     ModelTab,
-    ModelMapWithGamemodesItem
+    ModelMapWithGamemodesItem,
+    ModelBanItem,
+    ModelPlayerItem
 } from "./models/Models";
+import BanList from "./components/BanList";
 
 import "./App.css";
 import "./App.scss";
@@ -28,11 +32,18 @@ import "./App.scss";
 const App: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useState<string|undefined>(undefined);
-    const [formValue, setFormValue] = useState<Object>({});
+    const [formValue, setFormValue] = useState<any>({});
     const [tabs, setTabs] = useState<ModelTab[]>([]);
+
     const [availableMapsAndGamemodes, setAvailableMapsAndGamemodes] = useState<ModelMapWithGamemodesItem[]>([]);
     const [currentMapList, setCurrentMapList] = useState<ModelMapListItem[]>([]);
     const [mapListHasChanged, setMapListHasChanged] = useState<number>(0);
+
+    const [availablePlayers, setAvailablePlayers] = useState<ModelPlayerItem[]>([]);
+    const [currentBanList, setCurrentBanList] = useState<ModelBanItem[]>([]);
+    const [banListHasChanged, setBanListHasChanged] = useState<number>(0);
+
+    const [changedInputs, setChangedInputs] = useState<string[]>([]);
 
     /*
     * Debug
@@ -99,12 +110,31 @@ const App: React.FC = () => {
         }
     }
 
+    const hasSaveButton = (tab: any, item: any) => {
+        switch (item.inputType) {
+            case "float":
+            case "integer":
+                return true;
+            case "alphanumeric":
+                return true;
+            case "percentageModifier":
+                return true;
+            case "switch":
+            case "button":
+            case "none":
+            case "hidden":
+            default:
+                return false;
+        }
+    }
+
     const getCurrentTab = () => {
         return tabs.filter((tab: any) => tab.name === activeTab)[0];
     }
 
     const handleSave = () => {
-        let temp: Array<Array<string>> = [];
+        //let temp: Array<Array<string>> = [];
+        let temp: any = [];
         for (const [key, value] of Object.entries(formValue)) {
             temp.push([
                 key,
@@ -117,7 +147,7 @@ const App: React.FC = () => {
         // setOpen(false);
     }
 
-    window.OnSyncValues = (values: string) => {
+    window.OnSyncValues = (values: any) => {
         let _tabs: ModelTab[] = [];
         let _allItems: any = {};
         let _tempCurrentMaps: ModelMapListItem[] = [];
@@ -165,6 +195,17 @@ const App: React.FC = () => {
 
         setFormValue(_allItems);
         setCurrentMapList(_tempCurrentMaps);
+    }
+
+    window.OnSyncPlayers = (values: any) => {
+        let _tempPlayers: ModelPlayerItem[] = [];
+        Object.values(values).forEach((element: any) => {
+            _tempPlayers.push({
+                label: element,
+                value: element,
+            });
+        });
+        setAvailablePlayers(_tempPlayers);
     }
 
     window.OnSetMenu = (open: boolean) => {
@@ -243,6 +284,8 @@ const App: React.FC = () => {
                 backdrop={false}
                 open={open}
                 onClose={() => setOpen(false)}
+                placement="bottom"
+                full
             >
                 <Drawer.Header>
                     <Drawer.Title>InGame RCON</Drawer.Title>
@@ -263,7 +306,10 @@ const App: React.FC = () => {
                         onSelect={setActiveTab}
                         justified
                     >
-                        {tabs.map((tab: any, index: number) => (
+                        {tabs
+                        .sort((a: any, b: any) => String(a.name)
+                        .localeCompare(b.name))
+                        .map((tab: any, index: number) => (
                             <Nav.Item eventKey={tab.name} key={index}>
                                 {tab.name}
                             </Nav.Item>
@@ -274,7 +320,15 @@ const App: React.FC = () => {
                     <Form
                         fluid
                         formValue={formValue}
-                        onChange={formValue => setFormValue(formValue)}
+                        onChange={(formValue: any, event: any) => {
+                            /*if ((changedInputs.filter(e => e === event.target.name).length <= 0)) {
+                                setChangedInputs((prevState: string[]) => ([
+                                    ...prevState,
+                                    event.target.name
+                                ]));
+                            }*/
+                            setFormValue(formValue);
+                        }}
                     >
                         {getCurrentTab() !== undefined &&
                             <>
@@ -295,6 +349,20 @@ const App: React.FC = () => {
                                     />
                                 }
 
+                                {activeTab === "banList" &&
+                                    <BanList
+                                        availablePlayers={availablePlayers}
+                                        currentBanList={currentBanList}
+                                        setCurrentBanList={setCurrentBanList}
+                                        banListHasChanged={banListHasChanged}
+                                        setBanListHasChanged={() => {
+                                            setBanListHasChanged((prevState: number) => {
+                                                return ++prevState;
+                                            });
+                                        }}
+                                    />
+                                }
+
                                 {getCurrentTab()
                                 .items
                                 .filter((item: any) => item.inputType !== "none")
@@ -304,10 +372,25 @@ const App: React.FC = () => {
                                 (
                                     <Form.Group controlId={getCurrentTab().name + "." + item.name} key={index}>
                                         <Form.ControlLabel>{getCurrentTab().name + "." + item.name}</Form.ControlLabel>
-                                        {getInputType(
-                                            getCurrentTab(),
-                                            item
-                                        )}
+                                        <div className="inline-save">
+                                            {getInputType(
+                                                getCurrentTab(),
+                                                item
+                                            )}
+                                            {hasSaveButton(getCurrentTab(), item) &&
+                                                <IconButton
+                                                    icon={<CheckIcon />}
+                                                    appearance="primary"
+                                                    size="md"
+                                                    onClick={() => {
+                                                        sendToLua("WebUI:UpdateValues", JSON.stringify([[
+                                                            getCurrentTab().name + "." + item.name,
+                                                            formValue[getCurrentTab().name + "." + item.name]
+                                                        ]]));
+                                                    }}
+                                                />
+                                            }
+                                        </div>
                                         <Form.HelpText>
                                             {item.description}
                                         </Form.HelpText>
@@ -326,9 +409,10 @@ export default App;
 
 declare global {
     interface Window {
-        OnSyncValues: (values: string) => void;
-        OnSyncMaps: (values: string) => void;
+        OnSyncValues: (values: any) => void;
+        OnSyncMaps: (values: any) => void;
         OnSetMenu: (open: boolean) => void;
         OnToggleMenu: () => void;
+        OnSyncPlayers: (values: any) => void;
     }
 }

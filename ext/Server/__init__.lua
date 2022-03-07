@@ -227,7 +227,7 @@ function Server:RegisterVars()
 				canGet = true,
 				inputType = 'integer'
 			},
-            ['serverDesc'] = {
+            ['serverDescription'] = {
 				title = '',
 				description = '<description>',
 				currentData = nil,
@@ -249,13 +249,6 @@ function Server:RegisterVars()
 				inputType = 'switch'
 			},
             ['hud'] = {
-				title = '',
-				description = '<true/false>',
-				currentData = nil,
-				canGet = true,
-				inputType = 'switch'
-			},
-            ['crossHair'] = {
 				title = '',
 				description = '<true/false>',
 				currentData = nil,

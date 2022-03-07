@@ -1,33 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import {
     Button,
     Col,
     FlexboxGrid,
     IconButton,
-    InputNumber,
     List,
     Panel,
     Row,
     SelectPicker,
     Notification,
-    toaster
+    toaster,
+    Input
 } from "rsuite";
 import CloseIcon from '@rsuite/icons/Close';
-import PlayOutlineIcon from '@rsuite/icons/PlayOutline';
 
 import {
-    GamemodeNames,
-    LevelNames,
     sendToLua
 } from "../helpers";
 import {
-    ModelGamemode,
-    ModelMapListItem,
-    ModelMapWithGamemodesItem
+    ModelBanItem,
+    ModelPlayerItem
 } from "../models/Models";
 
-import "./MapList.scss";
+import "./BanList.scss";
 
 const styleStart = {
     display: 'flex',
@@ -49,35 +45,33 @@ const styleEnd = {
     alignItems: 'flex-end',
 };
 
-const mapIsAlreadyOnListMessage = (
+const playerIsAlreadyOnListMessage = (
     <Notification type="error" header="Error" closable>
-        Map and gamemode is already on the list!
+       Player is already on the list!
     </Notification>
 );
 
 interface Props {
-    availableMapsAndGamemodes: ModelMapWithGamemodesItem[];
-    currentMapList: ModelMapListItem[];
-    setCurrentMapList: React.Dispatch<React.SetStateAction<ModelMapListItem[]>>;
-    mapListHasChanged: number;
-    setMapListHasChanged: () => void;
-    closeDrawer: () => void;
+    availablePlayers: ModelPlayerItem[];
+    currentBanList: ModelBanItem[];
+    setCurrentBanList: React.Dispatch<React.SetStateAction<ModelBanItem[]>>;
+    banListHasChanged: number;
+    setBanListHasChanged: () => void;
 }
 
-const MapList: React.FC<Props> = ({
-    availableMapsAndGamemodes,
-    currentMapList,
-    setCurrentMapList,
-    mapListHasChanged,
-    setMapListHasChanged,
-    closeDrawer,
+const BanList: React.FC<Props> = ({
+    availablePlayers,
+    currentBanList,
+    setCurrentBanList,
+    banListHasChanged,
+    setBanListHasChanged,
 }) => {
-    const [gamemodes, setGamemodes] = useState<ModelGamemode[]>([]);
-    const [selectedMap, setSelectedMap] = useState<string|null>(null);
-    const [selectedGamemode, setSelectedGamemode] = useState<string|null>(null);
-    const [rounds, setRounds] = useState<number>(1);
+    // const [gamemodes, setGamemodes] = useState<ModelGamemode[]>([]);
+    const [selectedPlayer, setSelectedPlayer] = useState<string|null>(null);
+    // const [selectedGamemode, setSelectedGamemode] = useState<string|null>(null);
+    const [reason, setReason] = useState<string>("");
 
-    const handleSortEnd = ({ oldIndex, newIndex }: any) => {
+    /*const handleSortEnd = ({ oldIndex, newIndex }: any) => {
         setCurrentMapList((prevData: ModelMapListItem[]) => {
             const moveData = prevData.splice(oldIndex, 1);
             const newData = [ ...prevData ];
@@ -85,9 +79,9 @@ const MapList: React.FC<Props> = ({
             return newData;
         });
         setMapListHasChanged();
-    };
+    };*/
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (selectedMap !== null) {
             setSelectedGamemode(null);
             const foundMap = availableMapsAndGamemodes.find((map: any) => map.value === selectedMap);
@@ -105,32 +99,28 @@ const MapList: React.FC<Props> = ({
             setSelectedGamemode(null);
             setGamemodes([]);
         }
-    }, [selectedMap]);
+    }, [selectedMap]);*/
     
     return (
-        <div className="map-list">
+        <div className="ban-list">
             <Row>
                 <Col md={8}>
                     <SelectPicker
-                        data={availableMapsAndGamemodes}
+                        data={availablePlayers}
                         block
-                        placeholder="Map"
-                        onChange={(value: string) => setSelectedMap(value)}
-                        value={selectedMap}
-                        groupBy="type"
+                        placeholder="Player"
+                        onChange={(value: string) => setSelectedPlayer(value)}
+                        value={selectedPlayer}
                     />
                 </Col>
                 <Col md={8}>
-                    <SelectPicker
-                        data={gamemodes}
-                        block
-                        placeholder="Gamemode"
-                        disabled={selectedMap === null}
-                        onChange={(value: string) => setSelectedGamemode(value)}
-                        value={selectedGamemode}
+                    <Input
+                        placeholder="Reason"
+                        onChange={(value: string) => setReason(value)}
+                        value={reason}
                     />
                 </Col>
-                <Col md={4}>
+                {/*<Col md={4}>
                     <InputNumber
                         min={1}
                         max={100}
@@ -139,17 +129,18 @@ const MapList: React.FC<Props> = ({
                         onChange={(value: any) => setRounds(parseInt(value))}
                         disabled={selectedGamemode === null}
                     />
-                </Col>
+                </Col>*/}
                 <Col md={4}>
                     <Button
                         block
                         appearance="primary"
-                        disabled={selectedMap === null || selectedGamemode === null}
+                        color="red"
+                        disabled={selectedPlayer === null}
                         onClick={() => {
-                            if (currentMapList.some(e => e.map === selectedMap && e.gameMode === selectedGamemode)) {
-                                toaster.push(mapIsAlreadyOnListMessage, { placement: "topEnd" })
+                            if (currentBanList.some(e => e.id === selectedPlayer)) {
+                                toaster.push(playerIsAlreadyOnListMessage, { placement: "topEnd" })
                             } else {
-                                setSelectedMap(null);
+                                /*setSelectedMap(null);
                                 setSelectedGamemode(null);
                                 setCurrentMapList((prevData: ModelMapListItem[]) => ([
                                     ...prevData,
@@ -159,63 +150,50 @@ const MapList: React.FC<Props> = ({
                                         rounds: rounds.toString(),
                                     }
                                 ]));
-                                setMapListHasChanged();
+                                setMapListHasChanged();*/
                             }
                         }}
                     >
-                        Add
+                        BAN
                     </Button>
                 </Col>
             </Row>
             <Row style={{ marginTop: 10, marginBottom: 25 }}>
                 <Col md={24}>
                     <Panel bordered bodyFill>
-                        <List bordered sortable onSort={handleSortEnd}>
-                            {currentMapList.map(({ map, gameMode, rounds }: ModelMapListItem, index: number) => (
+                        <List bordered>
+                            {currentBanList.map(({ id }: ModelBanItem, index: number) => (
                                 <List.Item key={index} index={index}>
                                     <FlexboxGrid>
                                         <FlexboxGrid.Item colspan={2} style={styleStart}>
-                                            <h5>{rounds}</h5>
+                                            <h5>{/*rounds*/}</h5>
                                             <span>ROUND(S)</span>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item colspan={14} style={styleMiddle}>
-                                            <h4>{LevelNames[map]}</h4>
-                                            <p>{GamemodeNames[gameMode]}</p>
+                                            <h4>{id}</h4>
+                                            <p>{id}</p>
                                         </FlexboxGrid.Item>
                                         <FlexboxGrid.Item colspan={8} style={styleEnd}>
-                                            <IconButton
-                                                icon={<PlayOutlineIcon/>}
-                                                size="xs"
-                                                color="blue"
-                                                appearance="ghost"
-                                                style={{ marginRight: 8 }}
-                                                onClick={() => {
-                                                    sendToLua("WebUI:UpdateValues", JSON.stringify([
-                                                        [
-                                                            "mapList.setNextMapIndex",
-                                                            index.toString()
-                                                        ],
-                                                        [
-                                                            "mapList.runNextRound",
-                                                            ""
-                                                        ],
-                                                    ]));
-                                                    closeDrawer();
-                                                }}
-                                            />
                                             <IconButton
                                                 icon={<CloseIcon/>}
                                                 size="xs"
                                                 color="red"
                                                 appearance="ghost"
                                                 onClick={() => {
-                                                    setCurrentMapList((prevState: ModelMapListItem[]) => (
+                                                    sendToLua("WebUI:UpdateValues", JSON.stringify([
                                                         [
-                                                            ...prevState.slice(0, index),
-                                                            ...prevState.slice(index + 1)
-                                                        ]
-                                                    ));
-                                                    setMapListHasChanged();
+                                                            "banList.Remove",
+                                                            [
+                                                                "guid",
+                                                                id
+                                                            ]
+                                                        ],
+                                                        [
+                                                            "banList.save",
+                                                            ""
+                                                        ],
+                                                    ]));
+                                                    setBanListHasChanged();
                                                 }}
                                             />
                                         </FlexboxGrid.Item>
@@ -230,4 +208,4 @@ const MapList: React.FC<Props> = ({
     );
 }
 
-export default MapList;
+export default BanList;
