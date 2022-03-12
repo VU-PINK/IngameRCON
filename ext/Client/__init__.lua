@@ -79,7 +79,7 @@ function Client:OnClientUpdateInput()
             end
 
             WebUI:ExecuteJS(string.format("OnSyncMaps(%s);", json.encode(self.m_AvailableMaps)))
-            WebUI:ExecuteJS(string.format("OnSyncPlayers(%s);", json.encode(self.m_OnlinePlayers)))
+            -- WebUI:ExecuteJS(string.format("OnSyncPlayers(%s);", json.encode(self.m_OnlinePlayers)))
             WebUI:ExecuteJS("OnToggleMenu();")
             -- reset player tables
             s_PlayerTable = {}

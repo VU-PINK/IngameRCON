@@ -43,8 +43,6 @@ const App: React.FC = () => {
     const [currentBanList, setCurrentBanList] = useState<ModelBanItem[]>([]);
     const [banListHasChanged, setBanListHasChanged] = useState<number>(0);
 
-    const [changedInputs, setChangedInputs] = useState<string[]>([]);
-
     /*
     * Debug
     */
@@ -152,7 +150,7 @@ const App: React.FC = () => {
         let _allItems: any = {};
         let _tempCurrentMaps: ModelMapListItem[] = [];
         let _tempCurrentBans: ModelBanItem[] = [];
-
+        let _tempAvailablePlayers: ModelPlayerItem[] = [];
 
         Object.entries(values).forEach((value: any, _: any) => {
             let _items: any = [];
@@ -177,6 +175,16 @@ const App: React.FC = () => {
                             reason: _banTemp[index + 5] ?? "",
                         });
                         index = index + 5;
+                    }
+                } else if (value[0] === "admin" && item[0] === "listPlayers") {
+                    let _tempPlayers = item[1].currentData.splice(1);
+                    console.log(item);
+                    for (let index = 0; index < _tempPlayers.length; index++) {
+                        _tempAvailablePlayers.push({
+                            label: "string",
+                            value: "asd",
+                        });
+                        //index = index + 5;
                     }
                 } else {
                     _items.push({
@@ -209,18 +217,7 @@ const App: React.FC = () => {
         setFormValue(_allItems);
         setCurrentMapList(_tempCurrentMaps);
         setCurrentBanList(_tempCurrentBans);
-    }
-
-    window.OnSyncPlayers = (values: any) => {
-        /*let _tempPlayers: ModelPlayerItem[] = [];
-        Object.values(values).forEach((element: any) => {
-            _tempPlayers.push({
-                label: element,
-                value: element,
-            });
-        });
-        setAvailablePlayers(_tempPlayers);*/
-        console.log(values);
+        setAvailablePlayers(_tempAvailablePlayers);
     }
 
     window.OnSetMenu = (open: boolean) => {
@@ -336,12 +333,6 @@ const App: React.FC = () => {
                         fluid
                         formValue={formValue}
                         onChange={(formValue: any, event: any) => {
-                            /*if ((changedInputs.filter(e => e === event.target.name).length <= 0)) {
-                                setChangedInputs((prevState: string[]) => ([
-                                    ...prevState,
-                                    event.target.name
-                                ]));
-                            }*/
                             setFormValue(formValue);
                         }}
                     >
@@ -428,6 +419,5 @@ declare global {
         OnSyncMaps: (values: any) => void;
         OnSetMenu: (open: boolean) => void;
         OnToggleMenu: () => void;
-        OnSyncPlayers: (values: any) => void;
     }
 }

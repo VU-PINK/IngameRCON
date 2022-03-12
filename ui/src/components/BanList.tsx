@@ -25,13 +25,6 @@ import {
 
 import "./BanList.scss";
 
-const styleStart = {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexFlow: 'column',
-};
-
 const styleMiddle = {
     display: 'flex',
     justifyContent: 'flex-start',

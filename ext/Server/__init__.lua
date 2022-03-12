@@ -58,7 +58,8 @@ function Server:RegisterVars()
 				description = '<players: player subset>',
 				currentData = nil,
 				canGet = true,
-				inputType = 'hidden'
+				inputType = 'hidden',
+				defaultValue = { 'all' },
 			},
 		},
 		['banList'] = {
@@ -569,10 +570,15 @@ function Server:GetCurrentSettings(p_CommandGroup, p_Command)
 					local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
 					if l_CommandInfo.canGet then
-						s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
+						if l_CommandInfo.defaultValue then
+							s_ReceivedData = RCON:SendCommand(s_ConstructedString, l_CommandInfo.defaultValue)
+						else
+							s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
+						end
 						l_CommandInfo['currentData'] = s_ReceivedData
 						m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
 
+						print(s_ReceivedData)
 						for _, l_Value in pairs(s_ReceivedData) do
 							m_Logger:Write('Values: ' .. l_Value)
 						end
@@ -583,10 +589,15 @@ function Server:GetCurrentSettings(p_CommandGroup, p_Command)
 				local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
 				if l_CommandInfo.canGet then
-					s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
+					if l_CommandInfo.defaultValue then
+						s_ReceivedData = RCON:SendCommand(s_ConstructedString, l_CommandInfo.defaultValue)
+					else
+						s_ReceivedData = RCON:SendCommand(s_ConstructedString, {})
+					end
 					l_CommandInfo['currentData'] = s_ReceivedData
 					m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
 
+					print(s_ReceivedData)
 					for _, l_Value in pairs(s_ReceivedData) do
 						m_Logger:Write('Values: ' .. l_Value)
 					end
