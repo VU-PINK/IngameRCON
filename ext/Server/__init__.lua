@@ -44,7 +44,7 @@ function Server:RegisterVars()
 				description = '<name, teamID, squadID, forceKill>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'alphanumeric'
+				inputType = 'hidden'
 			},
             ['killPlayer'] = {
 				title = 'Kill Player',
@@ -473,7 +473,7 @@ function Server:RegisterVars()
                 description = '<team, amount>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'alphanumeric'
+				inputType = 'hidden'
 			},
             ['SpectatorCount'] = {
 				title = 'Spectator Count',
