@@ -39,7 +39,7 @@ function Server:RegisterVars()
 				canGet = false,
 				inputType = 'hidden'
 			},
-			['movePlayer'] = {
+            ['movePlayer'] = {
 				title = 'Move Player',
 				description = '<name, teamID, squadID, forceKill>',
 				currentData = nil,
@@ -101,35 +101,35 @@ function Server:RegisterVars()
         },
         ['mapList'] = {
             ['add'] = {
-				title = '',
+				title = 'Add',
 				description = '<map, gamemode, rounds, offset>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'hidden'
 			},
             ['remove'] = {
-				title = '',
+				title = 'Remove',
 				description = '<index>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'hidden'
 			},
             ['clear'] = {
-				title = '',
+				title = 'Clear',
 				description = '- Clears the maplist',
 				currentData = nil,
 				canGet = false,
 				inputType = 'button'
 			},
             ['list'] = {
-				title = '',
+				title = 'List',
 				description = '',
 				currentData = nil,
 				canGet = true,
 				inputType = 'hidden'
 			},
             ['nextMap'] = {
-				title = '',
+				title = 'Next Map',
 				description = '<index>',
 				currentData = nil,
 				canGet = false,
@@ -150,21 +150,14 @@ function Server:RegisterVars()
 				inputType = 'hidden'
 			},
             ['endRound'] = {
-				title = '',
+				title = 'End Round',
 				description = '<teamID> - End Current round, declaring the specified team as winners',
 				currentData = nil,
 				canGet = false,
 				inputType = 'button'
 			},
-            ['runNext'] = {
-				title = '',
-				description = ' - Run the next round',
-				currentData = nil,
-				canGet = false,
-				inputType = 'button'
-			},
             ['restartRound'] = {
-				title = '',
+				title = 'Restart Round',
 				description = ' - Restart the current round',
 				currentData = nil,
 				canGet = false,
@@ -178,8 +171,8 @@ function Server:RegisterVars()
 				inputType = 'hidden'
 			},
 			['runNextRound'] = {
-				title = '',
-				description = '',
+				title = 'Next Round',
+				description = ' - Run the next round',
 				currentData = nil,
 				canGet = false,
 				inputType = 'hidden'
