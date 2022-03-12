@@ -37,21 +37,21 @@ function Server:RegisterVars()
 				description = '<soldier name, reason>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'alphanumeric'
+				inputType = 'hidden'
 			},
             ['move'] = {
-				title = '',
+				title = 'Move Player',
 				description = '<name, teamID, squadID, forceKill>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
 			},
             ['kill'] = {
-				title = '',
+				title = 'Kill Player',
 				description = '<name>',
 				currentData = nil,
 				canGet = false,
-				inputType = 'alphanumeric'
+				inputType = 'hidden'
 			},
 			['listPlayers'] = {
 				title = '',
@@ -187,231 +187,231 @@ function Server:RegisterVars()
 		},
         ['vars'] = {
             ['serverName'] = {
-				title = '',
+				title = 'Server Name',
 				description = '<name>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'alphanumeric'
 			},
             ['password'] = {
-				title = '',
+				title = 'RCON Password',
 				description = '<password>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
 			},
             ['roundStartPlayerCount'] = {
-				title = '',
+				title = 'Minimum Players for Roundstart',
 				description = '<numPlayers>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['roundRestartPlayerCount'] = {
-				title = '',
+				title = 'Players for Roundrestart',
 				description = '<numPlayers>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['preRound'] = {
-				title = '',
+				title = 'Pre-Round Duration',
 				description = '<time> - Set duration of pre-round',
 				currentData = nil,
 				canGet = false,
 				inputType = 'integer'
 			},
             ['serverMessage'] = {
-				title = '',
+				title = 'Server Message',
 				description = '<message>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'alphanumeric'
 			},
             ['friendlyfire'] = {
-				title = '',
+				title = 'Friendly Fire',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['maxPlayers'] = {
-				title = '',
+				title = 'Maximum Players',
 				description = '<numPlayers>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['serverDescription'] = {
-				title = '',
+				title = 'Server Description',
 				description = '<description>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'alphanumeric'
 			},
             ['killCam'] = {
-				title = '',
+				title = 'Kill Cam',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['miniMap'] = {
-				title = '',
+				title = 'Minimap',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['hud'] = {
-				title = '',
+				title = 'Hud',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['3dSpotting'] = {
-				title = '',
+				title = '3D Spotting',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['miniMapSpotting'] = {
-				title = '',
+				title = 'Minimap Spotting',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['nameTag'] = {
-				title = '',
+				title = 'Nametags',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['3pCam'] = {
-				title = '',
+				title = 'Third Person Camera',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['regenerateHealth'] = {
-				title = '',
+				title = 'Health Regeneration',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['teamKillCountForKick'] = {
-				title = '',
+				title = 'Auto-Kick Teamkill Amount',
 				description = '<count>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['teamKillValueForKick'] = {
-				title = '',
+				title = 'Auto-Kick Value Amount',
 				description = '<count>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['teamKillValueIncrease'] = {
-				title = '',
+				title = 'Auto-Kick Value Increase',
 				description = '<count>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['teamKillValueDecreasePerSecond'] = {
-				title = '',
+				title = 'Auto-Kick Value Decrease per Second',
 				description = '<count>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['teamKillKickForBan'] = {
-				title = '',
+				title = 'Auto-Ban on Teamkill Amount',
 				description = '<count>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['idleTimeout'] = {
-				title = '',
+				title = 'AFK Timeout',
 				description = '<time>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['idleBanRounds'] = {
-				title = '',
+				title = 'AFK Auto-Ban',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['vehicleSpawnAllowed'] = {
-				title = '',
+				title = 'Allow Vehicle Spawning',
 				description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['vehicleSpawnDelay'] = {
-				title = '',
+				title = 'Vehicle Spawn Delay',
 				description = '<percentage modifier>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'percentageModifier'
 			},
             ['soldierHealth'] = {
-				title = '',
+				title = 'Soldier Health',
 				description = '<percentage modifier>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'percentageModifier'
 			},
             ['playerRespawnTime'] = {
-				title = '',
+				title = 'Respawn Timer',
 				description = '<percentage modifier>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'percentageModifier'
 			},
             ['playerManDownTime'] = {
-				title = '',
+				title = 'Downtime',
 				description = '<percentage modifier>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'percentageModifier'
 			},
             ['bulletDamage'] = {
-				title = '',
+				title = 'Bullet Damage',
 				description = '<percentage modifier>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'percentageModifier'
 			},
             ['gameModeCounter'] = {
-				title = '',
+				title = 'Ticket Scale',
                 description = '<integer> - Set Ticket Scale',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['onlySquadLeaderSpawn'] = {
-				title = '',
+				title = 'Only Spawn on Squad Leader',
                 description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['unlockMode'] = {
-				title = '',
+				title = 'Unlock Mode',
                 description = '<mode>',
 				currentData = nil,
 				canGet = true,
@@ -420,105 +420,105 @@ function Server:RegisterVars()
         },
         ['vu'] = {
             ['ColorCorrectionEnabled'] = {
-				title = '',
+				title = 'Enable Bluefilter',
                 description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['DesertingAllowed'] = {
-				title = '',
+				title = 'Disable Out of Bounds',
                 description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['DestructionEnabled'] = {
-				title = '',
+				title = 'Destruction',
                 description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['FadeInAll'] = {
-				title = '',
+				title = 'Fade in All',
                 description = '- Fade in all Players',
 				currentData = nil,
 				canGet = false,
 				inputType = 'button'
 			},
             ['FadeOutAll'] = {
-				title = '',
+				title = 'Fade out All',
                 description = '- Fade out all Players',
 				currentData = nil,
 				canGet = false,
 				inputType = 'button'
 			},
             ['FrequencyMode'] = {
-				title = '',
+				title = 'Frequency',
                 description = ' - return frequency of server',
 				currentData = nil,
 				canGet = true,
-				inputType = 'button'
+				inputType = 'hidden'
 			},
             ['HighPerformanceReplication'] = {
-				title = '',
+				title = 'High Performance Replication',
                 description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['ServerBanner'] = {
-				title = '',
+				title = 'Server Banner Link',
                 description = '<.jpg link>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'alphanumeric'
 			},
             ['SetTeamTicketCount'] = {
-				title = '',
+				title = 'Set Tickets',
                 description = '<team, amount>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
 			},
             ['SpectatorCount'] = {
-				title = '',
+				title = 'Spectator Count',
                 description = ' - return spec count',
 				currentData = nil,
 				canGet = true,
-				inputType = 'button'
+				inputType = 'hidden'
 			},
             ['SquadSize'] = {
-				title = '',
+				title = 'Squad Size',
                 description = '<size>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'integer'
 			},
             ['SunFlareEnabled'] = {
-				title = '',
+				title = 'Sun Flare',
                 description = '<true/false>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'switch'
 			},
             ['SuppressionMultiplier'] = {
-				title = '',
+				title = 'Suppression Multiplier',
                 description = '<percentage>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'percentageModifier'
 			},
             ['TimeScale'] = {
-				title = '',
+				title = 'Time Scale',
                 description = '<float>',
 				currentData = nil,
 				canGet = true,
 				inputType = 'float'
 			},
             ['VehicleDisablingEnabled'] = {
-				title = '',
+				title = 'Enable Vehicle Disabling',
                 description = '<true/false>',
 				currentData = nil,
 				canGet = true,
@@ -529,14 +529,14 @@ function Server:RegisterVars()
                 description = ' - return server fps',
 				currentData = nil,
 				canGet = true,
-				inputType = 'button'
+				inputType = 'hidden'
 			},
             ['FpsMa'] = {
 				title = '',
                 description = ' - return 30-second moving average of the server FPS',
 				currentData = nil,
 				canGet = true,
-				inputType = 'button'
+				inputType = 'hidden'
 			},
         }
 	}
