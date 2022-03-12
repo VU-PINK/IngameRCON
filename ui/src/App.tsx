@@ -69,7 +69,7 @@ const App: React.FC = () => {
                             ]]));
                         }}
                     >
-                        {tab.name}.{item.name??""}
+                        {item.title??""}
                     </Button>
                 );
             case "switch":
