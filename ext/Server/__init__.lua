@@ -90,6 +90,13 @@ function Server:RegisterVars()
 				currentData = nil,
 				canGet = true,
 				inputType = 'hidden'
+			},
+			['save'] = {
+				title = '',
+				description = 'saves the ban list',
+				currentData = nil,
+				canGet = false,
+				inputType = 'hidden'
 			}
         },
         ['mapList'] = {
@@ -548,6 +555,7 @@ function Server:RegisterEvents()
 	Events:Subscribe('GameAdmin:Player', self, self.OnAdminBroadcast)
     Events:Subscribe('GameAdmin:Clear', self, self.OnAdminClear)
 	Events:Subscribe('Player:Authenticated', self, self.OnPlayerAuthenticated)
+	Events:Subscribe('Player:Left', self, self.OnPlayerLeft)
 end
 
 function Server:OnLevelLoaded(p_LevelName, p_GameMode, p_Round, p_RoundsPerMap)
@@ -555,9 +563,15 @@ function Server:OnLevelLoaded(p_LevelName, p_GameMode, p_Round, p_RoundsPerMap)
 end
 
 function Server:OnPlayerAuthenticated(p_Player)
+    self:GetCurrentSettings()
+
 	if self.Admins[p_Player.name] or DEBUG then
 		NetEvents:SendTo('IngameRCON:IsAdmin', p_Player, true)
 	end
+end
+
+function Server:OnPlayerLeft(p_Player)
+    self:GetCurrentSettings()
 end
 
 function Server:GetCurrentSettings(p_CommandGroup, p_Command)
@@ -578,7 +592,6 @@ function Server:GetCurrentSettings(p_CommandGroup, p_Command)
 						l_CommandInfo['currentData'] = s_ReceivedData
 						m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
 
-						print(s_ReceivedData)
 						for _, l_Value in pairs(s_ReceivedData) do
 							m_Logger:Write('Values: ' .. l_Value)
 						end
@@ -597,7 +610,6 @@ function Server:GetCurrentSettings(p_CommandGroup, p_Command)
 					l_CommandInfo['currentData'] = s_ReceivedData
 					m_Logger:Write('Get Command (' .. s_ConstructedString .. ')')
 
-					print(s_ReceivedData)
 					for _, l_Value in pairs(s_ReceivedData) do
 						m_Logger:Write('Values: ' .. l_Value)
 					end
@@ -618,12 +630,12 @@ function Server:OnValuesUpdated(p_Player, p_JSONData)
 					local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
 					if l_Cmd == s_ConstructedString then
-						if (tostring(l_Args) == "") then
-							--- [1] Command (e.g. mapList.add)
-							RCON:SendCommand(l_Cmd)
+						if type(l_Args) == "table" then
+							RCON:SendCommand(l_Cmd, l_Args)
+						elseif type(l_Args) == "string" and l_Args ~= "" then
+							RCON:SendCommand(l_Cmd, { l_Args })
 						else
-							--- [1] Command (e.g. mapList.add) [2] Arguments {"MP_001", "RushLarge0", "1"})
-							RCON:SendCommand(l_Cmd, { tostring(l_Args) })
+							RCON:SendCommand(l_Cmd)
 						end
 					end
 				end

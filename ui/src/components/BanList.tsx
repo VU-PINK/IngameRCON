@@ -97,16 +97,18 @@ const BanList: React.FC<Props> = ({
     return (
         <div className="ban-list">
             <Row>
-                <Col md={8}>
+                <Col md={10}>
                     <SelectPicker
                         data={availablePlayers}
                         block
                         placeholder="Player"
                         onChange={(value: string) => setSelectedPlayer(value)}
                         value={selectedPlayer}
+                        valueKey="guid"
+                        labelKey="name"
                     />
                 </Col>
-                <Col md={8}>
+                <Col md={10}>
                     <Input
                         placeholder="Reason"
                         onChange={(value: string) => setReason(value)}
@@ -133,17 +135,23 @@ const BanList: React.FC<Props> = ({
                             if (currentBanList.some(e => e.id === selectedPlayer)) {
                                 toaster.push(playerIsAlreadyOnListMessage, { placement: "topEnd" })
                             } else {
-                                /*setSelectedMap(null);
-                                setSelectedGamemode(null);
-                                setCurrentMapList((prevData: ModelMapListItem[]) => ([
-                                    ...prevData,
-                                    {
-                                        map: selectedMap,
-                                        gameMode: selectedGamemode,
-                                        rounds: rounds.toString(),
-                                    }
+                                setSelectedPlayer(null);
+                                setReason("");
+                                sendToLua("WebUI:UpdateValues", JSON.stringify([
+                                    [
+                                        "banList.add",
+                                        [
+                                            "guid",
+                                            selectedPlayer,
+                                            "perm",
+                                            reason
+                                        ]
+                                    ],
+                                    [
+                                        "banList.save",
+                                        ""
+                                    ],
                                 ]));
-                                setMapListHasChanged();*/
                             }
                         }}
                     >

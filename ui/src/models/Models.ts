@@ -31,8 +31,20 @@ export interface ModelBanItem {
 };
 
 export interface ModelPlayerItem {
-    label: string;
-    value: string;
+    /*label: string;
+    value: string;*/
+    name: string;
+    guid: string;
+    teamId: string;
+    squadId: string;
+    kills: string;
+    deaths: string;
+    score: string;
+    rank: string;
+    ping: string;
+    spectator: string;
+    playerGuid: string;
+    ip: string;
 };
 
 export interface ModelTab {

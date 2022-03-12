@@ -146,11 +146,17 @@ const App: React.FC = () => {
     }
 
     window.OnSyncValues = (values: any) => {
+        values = JSON.parse(values);
         let _tabs: ModelTab[] = [];
         let _allItems: any = {};
         let _tempCurrentMaps: ModelMapListItem[] = [];
         let _tempCurrentBans: ModelBanItem[] = [];
         let _tempAvailablePlayers: ModelPlayerItem[] = [];
+
+        _tabs.push({
+            name: "playerList",
+            items: [],
+        });
 
         Object.entries(values).forEach((value: any, _: any) => {
             let _items: any = [];
@@ -178,13 +184,23 @@ const App: React.FC = () => {
                     }
                 } else if (value[0] === "admin" && item[0] === "listPlayers") {
                     let _tempPlayers = item[1].currentData.splice(1);
-                    console.log(item);
-                    for (let index = 0; index < _tempPlayers.length; index++) {
+                    let index = 14;
+                    for (index; index < _tempPlayers.length; index++) {
                         _tempAvailablePlayers.push({
-                            label: "string",
-                            value: "asd",
+                            name: _tempPlayers[index],
+                            guid: _tempPlayers[index + 1],
+                            teamId: _tempPlayers[index + 2],
+                            squadId: _tempPlayers[index + 3],
+                            kills: _tempPlayers[index + 4],
+                            deaths: _tempPlayers[index + 5],
+                            score: _tempPlayers[index + 6],
+                            rank: _tempPlayers[index + 7],
+                            ping: _tempPlayers[index + 8],
+                            spectator: _tempPlayers[index + 9],
+                            playerGuid: _tempPlayers[index + 10],
+                            ip: _tempPlayers[index + 11],
                         });
-                        //index = index + 5;
+                        index = index + 11;
                     }
                 } else {
                     _items.push({
@@ -301,7 +317,7 @@ const App: React.FC = () => {
             >
                 <Drawer.Header>
                     <Drawer.Title>InGame RCON</Drawer.Title>
-                    <Drawer.Actions>
+                    {/*<Drawer.Actions>
                         <Button 
                             onClick={handleSave}
                             appearance="primary"
@@ -309,7 +325,7 @@ const App: React.FC = () => {
                         >
                             Apply changes
                         </Button>
-                    </Drawer.Actions>
+                    </Drawer.Actions>*/}
                 </Drawer.Header>
                 <div className="drawer-nav">
                     <Nav 
@@ -369,9 +385,23 @@ const App: React.FC = () => {
                                     />
                                 }
 
+                                {activeTab === "playerList" &&
+                                    <BanList
+                                        availablePlayers={availablePlayers}
+                                        currentBanList={currentBanList}
+                                        setCurrentBanList={setCurrentBanList}
+                                        banListHasChanged={banListHasChanged}
+                                        setBanListHasChanged={() => {
+                                            setBanListHasChanged((prevState: number) => {
+                                                return ++prevState;
+                                            });
+                                        }}
+                                    />
+                                }
+
                                 {getCurrentTab()
                                 .items
-                                .filter((item: any) => item.inputType !== "none")
+                                .filter((item: any) => item.inputType !== "hidden")
                                 .sort((a: any, b: any) => String(a.inputType)
                                 .localeCompare(b.inputType))
                                 .map((item: any, index: number) => 

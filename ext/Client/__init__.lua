@@ -72,18 +72,8 @@ end
 function Client:OnClientUpdateInput()
     if InputManager:WentKeyDown(InputDeviceKeys.IDK_F10) then
         if self.IsAdmin or DEBUG then
-            -- get current players for banlist
-            local s_PlayerTable = PlayerManager:GetPlayers()
-            for _, l_Player in ipairs(s_PlayerTable) do
-                table.insert(self.m_OnlinePlayers, {l_Player.onlineId, l_Player.name})
-            end
-
             WebUI:ExecuteJS(string.format("OnSyncMaps(%s);", json.encode(self.m_AvailableMaps)))
-            -- WebUI:ExecuteJS(string.format("OnSyncPlayers(%s);", json.encode(self.m_OnlinePlayers)))
             WebUI:ExecuteJS("OnToggleMenu();")
-            -- reset player tables
-            s_PlayerTable = {}
-            self.m_OnlinePlayers = {}
         end
     end
 end
@@ -106,9 +96,8 @@ function Client:OnPullRequest()
 end
 
 function Client:OnPullAnswer(p_CurrentSettingsJSON)
-    local s_ReceivedSettings = json.decode(p_CurrentSettingsJSON)
-    m_Logger:Write('*Full Table:' .. json.encode(s_ReceivedSettings))
-    WebUI:ExecuteJS(string.format("OnSyncValues(%s);", json.encode(s_ReceivedSettings)))
+    m_Logger:Write('*Full Table:' .. p_CurrentSettingsJSON)
+    WebUI:ExecuteJS(string.format("OnSyncValues('%s');", p_CurrentSettingsJSON))
 end
 
 function Client:OnMapRegister(p_MapTable)
