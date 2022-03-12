@@ -12,28 +12,28 @@ function Server:RegisterVars()
     self.m_ValidCommands = {
         ['admin'] = {
             ['password'] = {
-				title = '',
+				title = 'Set Admin Password',
 				description = '<password>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
             },
             ['say'] = {
-				title = '',
+				title = 'Chat Message (say)',
 				description = '<message, players>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
             },
             ['yell'] = {
-				title = '',
+				title = 'Announcement (yell)',
 				description = '<message, duration, players>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
 			},
             ['kick'] = {
-				title = '',
+				title = 'Kick Player',
 				description = '<soldier name, reason>',
 				currentData = nil,
 				canGet = false,
@@ -556,7 +556,7 @@ end
 
 function Server:OnPlayerAuthenticated(p_Player)
 	if self.Admins[p_Player.name] or DEBUG then
-		NetEvents:SendTo('IngameRCON:IsAdmin', p_Player, true) 
+		NetEvents:SendTo('IngameRCON:IsAdmin', p_Player, true)
 	end
 end
 
