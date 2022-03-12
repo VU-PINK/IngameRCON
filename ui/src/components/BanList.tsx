@@ -152,6 +152,7 @@ const BanList: React.FC<Props> = ({
                                         ""
                                     ],
                                 ]));
+                                sendToLua("WebUI:PullRequest");
                             }
                         }}
                     >

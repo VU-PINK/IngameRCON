@@ -32,21 +32,21 @@ function Server:RegisterVars()
 				canGet = false,
 				inputType = 'alphanumeric'
 			},
-            ['kick'] = {
+            ['kickPlayer'] = {
 				title = 'Kick Player',
 				description = '<soldier name, reason>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'hidden'
 			},
-            ['move'] = {
+			['movePlayer'] = {
 				title = 'Move Player',
 				description = '<name, teamID, squadID, forceKill>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
 			},
-            ['kill'] = {
+            ['killPlayer'] = {
 				title = 'Kill Player',
 				description = '<name>',
 				currentData = nil,

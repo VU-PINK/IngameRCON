@@ -25,6 +25,7 @@ import {
     ModelPlayerItem
 } from "./models/Models";
 import BanList from "./components/BanList";
+import PlayerList from "./components/PlayerList";
 
 import "./App.css";
 import "./App.scss";
@@ -385,17 +386,9 @@ const App: React.FC = () => {
                                     />
                                 }
 
-                                {activeTab === "playerList" &&
-                                    <BanList
+                                {activeTab === "admin" &&
+                                    <PlayerList
                                         availablePlayers={availablePlayers}
-                                        currentBanList={currentBanList}
-                                        setCurrentBanList={setCurrentBanList}
-                                        banListHasChanged={banListHasChanged}
-                                        setBanListHasChanged={() => {
-                                            setBanListHasChanged((prevState: number) => {
-                                                return ++prevState;
-                                            });
-                                        }}
                                     />
                                 }
 
@@ -407,7 +400,7 @@ const App: React.FC = () => {
                                 .map((item: any, index: number) => 
                                 (
                                     <Form.Group controlId={getCurrentTab().name + "." + item.name} key={index}>
-                                        <Form.ControlLabel>{getCurrentTab().name + "." + item.name}</Form.ControlLabel>
+                                        <Form.ControlLabel>{item.title}</Form.ControlLabel>
                                         <div className="inline-save">
                                             {getInputType(
                                                 getCurrentTab(),
