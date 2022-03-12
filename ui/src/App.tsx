@@ -77,6 +77,12 @@ const App: React.FC = () => {
                     <Form.Control 
                         name={tab.name + "." + item.name}
                         accepter={ToggleExtended}
+                        onChange={(value: any) => {
+                            sendToLua("WebUI:UpdateValues", JSON.stringify([[
+                                tab.name + "." + item.name,
+                                value.toString()
+                            ]]));
+                        }}
                     />
                 );
             case "float":
@@ -154,11 +160,6 @@ const App: React.FC = () => {
         let _tempCurrentBans: ModelBanItem[] = [];
         let _tempAvailablePlayers: ModelPlayerItem[] = [];
 
-        _tabs.push({
-            name: "playerList",
-            items: [],
-        });
-
         Object.entries(values).forEach((value: any, _: any) => {
             let _items: any = [];
             Object.entries(value[1]).forEach((item: any, _: any) => {
@@ -209,6 +210,7 @@ const App: React.FC = () => {
                         description: item[1].description??"",
                         canGet: item[1].canGet,
                         inputType: item[1].inputType??"none",
+                        title: item[1].title??"",
                     });
     
                     if (item[1].canGet === true) {
