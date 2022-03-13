@@ -47,65 +47,86 @@ const playerIsAlreadyOnListMessage = (
 interface Props {
     availablePlayers: ModelPlayerItem[];
     currentBanList: ModelBanItem[];
-    setCurrentBanList: React.Dispatch<React.SetStateAction<ModelBanItem[]>>;
-    banListHasChanged: number;
     setBanListHasChanged: () => void;
+    selectedPlayerToBan: string|null;
+    setSelectedPlayerToBan: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const BanList: React.FC<Props> = ({
     availablePlayers,
     currentBanList,
-    setCurrentBanList,
-    banListHasChanged,
     setBanListHasChanged,
+    selectedPlayerToBan,
+    setSelectedPlayerToBan
 }) => {
-    // const [gamemodes, setGamemodes] = useState<ModelGamemode[]>([]);
-    const [selectedPlayer, setSelectedPlayer] = useState<string|null>(null);
-    // const [selectedGamemode, setSelectedGamemode] = useState<string|null>(null);
     const [reason, setReason] = useState<string>("");
+    const [type, setType] = useState<string>("perm");
 
-    /*const handleSortEnd = ({ oldIndex, newIndex }: any) => {
-        setCurrentMapList((prevData: ModelMapListItem[]) => {
-            const moveData = prevData.splice(oldIndex, 1);
-            const newData = [ ...prevData ];
-            newData.splice(newIndex, 0, moveData[0]);
-            return newData;
-        });
-        setMapListHasChanged();
-    };*/
-
-    /*useEffect(() => {
-        if (selectedMap !== null) {
-            setSelectedGamemode(null);
-            const foundMap = availableMapsAndGamemodes.find((map: any) => map.value === selectedMap);
-            if (foundMap) {
-                let _tempGamemodes: ModelGamemode[] = [];
-                foundMap.gameModes.forEach((element: any) => {
-                    _tempGamemodes.push({
-                        label: GamemodeNames[element] + " (" + element + ")",
-                        value: element,
-                    });
-                });
-                setGamemodes(_tempGamemodes);
-            }
-        } else {
-            setSelectedGamemode(null);
-            setGamemodes([]);
-        }
-    }, [selectedMap]);*/
-    
     return (
         <div className="ban-list">
             <Row>
-                <Col md={10}>
+                <Col md={6}>
                     <SelectPicker
                         data={availablePlayers}
                         block
                         placeholder="Player"
-                        onChange={(value: string) => setSelectedPlayer(value)}
-                        value={selectedPlayer}
+                        onChange={(value: string) => setSelectedPlayerToBan(value)}
+                        value={selectedPlayerToBan}
                         valueKey="guid"
                         labelKey="name"
+                    />
+                </Col>
+                <Col md={4}>
+                    <SelectPicker 
+                        data={[
+                            {
+                                label: "Permanent",
+                                value: "perm",
+                            },
+                            {
+                                label: "5 minutes",
+                                value: "300",
+                            },
+                            {
+                                label: "15 minutes",
+                                value: "900",
+                            },
+                            {
+                                label: "30 minutes",
+                                value: "1800",
+                            },
+                            {
+                                label: "1 hour",
+                                value: "3600",
+                            },
+                            {
+                                label: "12 hours",
+                                value: "43200",
+                            },
+                            {
+                                label: "1 day",
+                                value: "86400",
+                            },
+                            {
+                                label: "1 week",
+                                value: "604800",
+                            },
+                            {
+                                label: "1 month",
+                                value: "2629740",
+                            },
+                            {
+                                label: "1 year",
+                                value: "31556880",
+                            },
+                        ]}
+                        searchable={false}
+                        cleanable={false}
+                        value={type}
+                        onChange={(val: string) => {
+                            setType(val);
+                        }}
+                        block
                     />
                 </Col>
                 <Col md={10}>
@@ -115,43 +136,53 @@ const BanList: React.FC<Props> = ({
                         value={reason}
                     />
                 </Col>
-                {/*<Col md={4}>
-                    <InputNumber
-                        min={1}
-                        max={100}
-                        defaultValue={1}
-                        value={rounds}
-                        onChange={(value: any) => setRounds(parseInt(value))}
-                        disabled={selectedGamemode === null}
-                    />
-                </Col>*/}
                 <Col md={4}>
                     <Button
                         block
                         appearance="primary"
                         color="red"
-                        disabled={selectedPlayer === null}
+                        disabled={selectedPlayerToBan === null}
                         onClick={() => {
-                            if (currentBanList.some(e => e.id === selectedPlayer)) {
+                            if (currentBanList.some(e => e.id === selectedPlayerToBan)) {
                                 toaster.push(playerIsAlreadyOnListMessage, { placement: "topEnd" })
                             } else {
-                                setSelectedPlayer(null);
-                                setReason("");
-                                sendToLua("WebUI:UpdateValues", JSON.stringify([
-                                    [
-                                        "banList.add",
+                                if (type === "perm") {
+                                    sendToLua("WebUI:UpdateValues", JSON.stringify([
                                         [
-                                            "guid",
-                                            selectedPlayer,
-                                            "perm",
-                                            reason
-                                        ]
-                                    ],
-                                    [
-                                        "banList.save",
-                                        ""
-                                    ],
-                                ]));
+                                            "banList.add",
+                                            [
+                                                "guid",
+                                                selectedPlayerToBan,
+                                                "perm",
+                                                reason
+                                            ]
+                                        ],
+                                        [
+                                            "banList.save",
+                                            ""
+                                        ],
+                                    ]));
+                                } else {
+                                    sendToLua("WebUI:UpdateValues", JSON.stringify([
+                                        [
+                                            "banList.add",
+                                            [
+                                                "guid",
+                                                selectedPlayerToBan,
+                                                "seconds",
+                                                type,
+                                                reason
+                                            ]
+                                        ],
+                                        [
+                                            "banList.save",
+                                            ""
+                                        ],
+                                    ]));
+                                }
+                                setSelectedPlayerToBan(null);
+                                setReason("");
+                                setType("perm");
                                 sendToLua("WebUI:PullRequest");
                             }
                         }}
@@ -180,7 +211,7 @@ const BanList: React.FC<Props> = ({
                                                 onClick={() => {
                                                     sendToLua("WebUI:UpdateValues", JSON.stringify([
                                                         [
-                                                            "banList.Remove",
+                                                            "banList.remove",
                                                             [
                                                                 "guid",
                                                                 id
@@ -191,7 +222,7 @@ const BanList: React.FC<Props> = ({
                                                             ""
                                                         ],
                                                     ]));
-                                                    setBanListHasChanged();
+                                                    sendToLua("WebUI:PullRequest");
                                                 }}
                                             />
                                         </FlexboxGrid.Item>

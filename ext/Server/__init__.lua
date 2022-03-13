@@ -589,8 +589,8 @@ function Server:GetCurrentSettings(p_CommandGroup, p_Command)
 							m_Logger:Write('Values: ' .. l_Value)
 						end
 					end
+					return
 				end
-				return
 			else
 				local s_ConstructedString = self:ConstructCommandString(l_CommandGroup, l_Command)
 
@@ -642,6 +642,7 @@ end
 
 function Server:OnValuePullRequest(p_Player)
 	if self.Admins[p_Player.name] or DEBUG then
+		self:GetCurrentSettings('admin', 'listPlayers')
 		local s_CurrentSettings = json.encode(self.m_ValidCommands)
 		NetEvents:SendTo('IngameRCON:PullAnswer', p_Player, s_CurrentSettings)
 	else

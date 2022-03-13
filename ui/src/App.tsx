@@ -29,6 +29,7 @@ import PlayerList from "./components/PlayerList";
 
 import "./App.css";
 import "./App.scss";
+import { escapeLeadingUnderscores } from "typescript";
 
 const App: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
@@ -43,6 +44,8 @@ const App: React.FC = () => {
     const [availablePlayers, setAvailablePlayers] = useState<ModelPlayerItem[]>([]);
     const [currentBanList, setCurrentBanList] = useState<ModelBanItem[]>([]);
     const [banListHasChanged, setBanListHasChanged] = useState<number>(0);
+
+    const [selectedPlayerToBan, setSelectedPlayerToBan] = useState<string|null>(null);
 
     /*
     * Debug
@@ -219,6 +222,8 @@ const App: React.FC = () => {
                             val = item[1].currentData[1] === "true" ? true : false;
                         }
                         _allItems[value[0] + "." + item[0]] = val;
+                    } else {
+                        _allItems[value[0] + "." + item[0]] = "";
                     }
                 }
             });
@@ -288,6 +293,22 @@ const App: React.FC = () => {
             sendToLua("WebUI:UpdateMaplist", JSON.stringify(_sendData));
         }
     }, [mapListHasChanged]);
+
+    useEffect(() => {
+        if (activeTab !== "banList") {
+            setSelectedPlayerToBan(null);
+        }
+
+        if (activeTab === "admin") {
+            let interval: any = null;
+            sendToLua("WebUI:PullRequest");
+            interval = setInterval(() => {
+                sendToLua("WebUI:PullRequest");
+            }, 10000);
+            return () => clearInterval(interval);
+        }
+    }, [activeTab]);
+    
 
     return (
         <CustomProvider theme="dark">
@@ -378,19 +399,23 @@ const App: React.FC = () => {
                                     <BanList
                                         availablePlayers={availablePlayers}
                                         currentBanList={currentBanList}
-                                        setCurrentBanList={setCurrentBanList}
-                                        banListHasChanged={banListHasChanged}
                                         setBanListHasChanged={() => {
                                             setBanListHasChanged((prevState: number) => {
                                                 return ++prevState;
                                             });
                                         }}
+                                        selectedPlayerToBan={selectedPlayerToBan}
+                                        setSelectedPlayerToBan={setSelectedPlayerToBan}
                                     />
                                 }
 
                                 {activeTab === "admin" &&
                                     <PlayerList
                                         availablePlayers={availablePlayers}
+                                        setBanPreferred={(guid: string) => {
+                                            setSelectedPlayerToBan(guid);
+                                            setActiveTab("banList");
+                                        }}
                                     />
                                 }
 

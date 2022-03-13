@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Button, ButtonToolbar, Table, Tag } from 'rsuite';
+import { Button, Dropdown, IconButton, Popover, Table, Tag, Whisper } from 'rsuite';
+import MoreIcon from '@rsuite/icons/More';
 
 import {
     sendToLua
@@ -12,10 +13,12 @@ const insulter = require('insult');
 
 interface Props {
     availablePlayers: any[];
+    setBanPreferred: (guid: string) => void;
 }
 
 const PlayerList: React.FC<Props> = ({
     availablePlayers,
+    setBanPreferred,
 }) => {
     return (
         <Table
@@ -63,64 +66,72 @@ const PlayerList: React.FC<Props> = ({
                 <Table.HeaderCell>Actions</Table.HeaderCell>
                 <Table.Cell>
                     {(rowData: any) => {
-                        function handleKill() {
-                            sendToLua("WebUI:UpdateValues", JSON.stringify([
-                                [
-                                    "admin.killPlayer",
-                                    rowData.name
-                                ]
-                            ]));
-                        }
-                        function handleKick() {
-                            sendToLua("WebUI:UpdateValues", JSON.stringify([
-                                [
-                                    "admin.kickPlayer",
-                                    [
-                                        rowData.name,
-                                        insulter.Insult()
-                                    ]
-                                ]
-                            ]));
-                            sendToLua("WebUI:PullRequest");
-                        }
-                        function handleBan() {
-                            sendToLua("WebUI:UpdateValues", JSON.stringify([
-                                [
-                                    "banList.add",
-                                    [
-                                        "guid",
-                                        rowData.guid,
-                                        "perm"
-                                    ]
-                                ],
-                                [
-                                    "banList.save",
-                                    ""
-                                ],
-                            ]));
-                            sendToLua("WebUI:PullRequest");
-                        }
-                        function handleSwitch() {
-                            sendToLua("WebUI:UpdateValues", JSON.stringify([
-                                [
-                                    "admin.movePlayer",
-                                    [
-                                        rowData.name,
-                                        rowData.teamId === "1" ? "2" : "1",
-                                        "0",
-                                        "true"
-                                    ]
-                                ],
-                            ]));
-                            sendToLua("WebUI:PullRequest");
-                        }
                         return (
-                            <ButtonToolbar>
-                                <Button onClick={handleSwitch} appearance="primary" size="xs">Switch</Button>
-                                <Button onClick={handleKill} appearance="primary" size="xs">Kill</Button>
-                                <Button onClick={handleKick} appearance="primary" color="yellow" size="xs">Kick</Button>
-                                <Button onClick={handleBan} appearance="primary" color="red" size="xs">Ban</Button>
-                            </ButtonToolbar>
+                            <Whisper 
+                                placement="autoVerticalStart"
+                                trigger="click"
+                                speaker={
+                                    <Popover full>
+                                        <Dropdown.Menu onSelect={(eventKey: any) => {
+                                            switch (eventKey) {
+                                                case 1:
+                                                    sendToLua("WebUI:UpdateValues", JSON.stringify([
+                                                        [
+                                                            "admin.movePlayer",
+                                                            [
+                                                                rowData.name,
+                                                                rowData.teamId === "1" ? "2" : "1",
+                                                                "0",
+                                                                "true"
+                                                            ]
+                                                        ],
+                                                    ]));
+                                                    sendToLua("WebUI:PullRequest");
+                                                    break;
+                                                case 2:
+                                                    sendToLua("WebUI:UpdateValues", JSON.stringify([
+                                                        [
+                                                            "admin.killPlayer",
+                                                            rowData.name
+                                                        ]
+                                                    ]));
+                                                    break;
+                                                case 3:
+                                                    sendToLua("WebUI:UpdateValues", JSON.stringify([
+                                                        [
+                                                            "admin.kickPlayer",
+                                                            [
+                                                                rowData.name,
+                                                                insulter.Insult()
+                                                            ]
+                                                        ]
+                                                    ]));
+                                                    sendToLua("WebUI:PullRequest");
+                                                    break;
+                                                case 4:
+                                                    setBanPreferred(rowData.guid);
+                                                    break;
+                                            }
+                                        }}>
+                                            <Dropdown.Item eventKey={1}>
+                                                Move to {rowData.teamId === "1" ? "RU" : "US"}
+                                            </Dropdown.Item>
+                                            <Dropdown.Item eventKey={2}>
+                                                Kill
+                                            </Dropdown.Item>
+                                            <Dropdown.Item divider />
+                                            <Dropdown.Item eventKey={3}>
+                                                Kick
+                                            </Dropdown.Item>
+                                            <Dropdown.Item eventKey={4}>
+                                                Ban
+                                            </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Popover>
+                                }
+                            >
+                                <IconButton size="xs" appearance="subtle" icon={<MoreIcon />} />
+                            </Whisper>
                         );
                     }}
                 </Table.Cell>
