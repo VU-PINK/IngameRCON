@@ -58,7 +58,7 @@ function Client:RegisterEvents()
     Events:Subscribe('WebUI:UpdateBanlist', self, self.OnWebUIUpdateBanlist)
 	Events:Subscribe('WebUI:PullRequest', self, self.OnPullRequest)
     Events:Subscribe('InGameRCON:RegisterCustomMap', self, self.OnMapRegister)
-    Events:Subscribe('InGameRCON:AddCustomMod', self, self.OnModeRegister)
+    Events:Subscribe('InGameRCON:AddCustomMode', self, self.OnModeRegister)
 end
 
 function Client:OnExtensionLoaded()
