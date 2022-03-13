@@ -5,3 +5,4 @@ project.code-workspace
 .vu/intermediate
 .vscode
 .gitattributes
+ui/*
