@@ -1,1 +1,20 @@
-# VS Code Mod Template
+# IngameRCON
+
+**Dependency**: https://github.com/FlashHit/VU-Mods/tree/master/gameAdmin
+
+Tries to replace Procon for VU by allowing the usage of Procon commands ingame.
+
+## Installation
+1. Download and Install [gameAdmin](https://github.com/FlashHit/VU-Mods/tree/master/gameAdmin) by FlashHit
+2. Download and Install IngameRCON
+3. Join your Server right after Startup, the first person joinig will automatically be saved as the Server Owner, granting them full rights / priviliges.
+4. Add any further Admins using gameAdmin 
+5. You are now able to open & use IngameRCON with **F10**
+6. Enjoy
+
+### FOR DEVS - Adding Custom Maps & Modes (Dispatch on Client)
+Events:Dispatch('InGameRCON:RegisterCustomMap', table)
+``` table = {'NameOfMap', {'CustomGroup', {'Mode1', 'Mode2', 'Mode3'}}```
+
+Events:Dispatch('InGameRCON:AddCustomMode', table)
+``` table = {'NameOfMap', {'Mode1', Mode2', 'Mode3'}}```
