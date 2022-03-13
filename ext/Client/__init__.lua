@@ -123,7 +123,7 @@ function Client:OnServerAdminCheck(p_Boolean)
     self.IsAdmin = p_Boolean
 
     if p_Boolean then
-        WebUI:Show()
+        WebUI:Init()
     else
         WebUI:ResetMouse()
         WebUI:Hide()
