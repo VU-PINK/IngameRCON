@@ -126,6 +126,7 @@ function Client:OnServerAdminCheck(p_Boolean)
         WebUI:Init()
     else
         WebUI:ResetMouse()
+        WebUI:ResetKeyboard()
         WebUI:Hide()
     end
 end
