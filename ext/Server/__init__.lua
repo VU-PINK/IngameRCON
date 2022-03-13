@@ -655,23 +655,22 @@ function Server:ConstructCommandString(p_CommandGroup, p_Command)
 end
 
 function Server:OnAdminBroadcast(p_PlayerName, p_Abilitities)
-	if p_Abilitities ~= nil then
-    	self.Admins[p_PlayerName] = true
-	end
-
 	local s_Player = PlayerManager:GetPlayerByName(p_PlayerName)
 	if s_Player ~= nil and p_Abilitities ~= nil then
+    	self.Admins[p_PlayerName] = true
 		NetEvents:SendTo('IngameRCON:IsAdmin', s_Player, true)
+	elseif s_Player ~= nil then
+		self.Admins[p_PlayerName] = nil
+		NetEvents:SendTo('IngameRCON:IsAdmin', s_Player, false)
 	end
 end
 
 function Server:OnAdminClear()
-	self.Admins = {}
-
 	local s_Players = PlayerManager:GetPlayers()
 	for _, l_Player in ipairs(s_Players) do
 		NetEvents:SendTo('IngameRCON:IsAdmin', l_Player, false)
 	end
+	self.Admins = {}
 end
 
 function Server:OnUpdateMaplist(p_Player, p_JSONData)
