@@ -125,6 +125,7 @@ function Client:OnServerAdminCheck(p_Boolean)
     if p_Boolean then
         WebUI:Show()
     else
+        WebUI:ResetMouse()
         WebUI:Hide()
     end
 end
