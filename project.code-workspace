@@ -11,6 +11,10 @@
 		{
 			"name": "Client",
 			"path": "ext\\Client"
+		},
+		{
+			"name": "UI",
+			"path": "ui"
 		}
 	],
 	"settings": {
