@@ -20,14 +20,14 @@ function Server:RegisterVars()
             },
             ['say'] = {
 				title = 'Chat Message (say)',
-				description = '<message, players>',
+				description = '<message>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
             },
             ['yell'] = {
 				title = 'Announcement (yell)',
-				description = '<message, duration, players>',
+				description = '<message>',
 				currentData = nil,
 				canGet = false,
 				inputType = 'alphanumeric'
