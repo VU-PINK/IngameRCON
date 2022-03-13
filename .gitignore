@@ -2,3 +2,6 @@ ext/Shared/.vu
 ext/Server/.vu
 ext/Client/.vu
 project.code-workspace
+.vu/intermediate
+.vscode
+.gitattributes
