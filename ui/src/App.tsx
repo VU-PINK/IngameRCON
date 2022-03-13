@@ -51,11 +51,11 @@ const App: React.FC = () => {
     * Debug
     */
     let debugMode: boolean = false;
-    /*if (!navigator.userAgent.includes("VeniceUnleashed")) {
+    if (!navigator.userAgent.includes("VeniceUnleashed")) {
         if (window.location.ancestorOrigins === undefined || window.location.ancestorOrigins[0] !== "webui://main") {
             debugMode = true;
         }
-    }*/
+    }
 
     const getInputType = (tab: any, item: any) => {
         switch (item.inputType) {

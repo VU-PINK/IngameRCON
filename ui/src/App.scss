@@ -2,6 +2,10 @@ body {
     background: transparent;
 }
 
+#debug {
+    display: none !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
