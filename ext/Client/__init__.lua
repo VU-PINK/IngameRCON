@@ -43,7 +43,7 @@ function Client:RegisterVars()
 
     self.m_OnlinePlayers = {}
 
-    self.IsAdmin = true
+    self.IsAdmin = false
 end
 
 function Client:RegisterEvents()
@@ -120,6 +120,7 @@ function Client:OnModeRegister(p_MapTable)
 end
 
 function Client:OnServerAdminCheck(p_Boolean)
+    m_Logger:Write("RECEIVED ADMIN BOOLEAN: " .. tostring(p_Boolean))
     self.IsAdmin = p_Boolean
 
     if p_Boolean then
