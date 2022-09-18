@@ -1,7 +1,7 @@
 {
     "Name": "IngameRCON",
     "Description": "Awesome Ingame RCON",
-    "Version": "1.0.0",
+    "Version": "1.0.2",
 	"Authors": ["KVN", "IllustrisJack"],
     "HasVeniceEXT": true,
 	"HasWebUI": true,
